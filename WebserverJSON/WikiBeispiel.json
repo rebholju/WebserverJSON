@@ -1,0 +1,36 @@
+{
+"Sensors" : [ {
+                           "name" : "temperature",
+                           "value" : "27",
+                           "unit" : "C",
+                           "state" : "ON",
+                           "timestamp" : "20190607T134601Z"
+                           },
+                       {
+                           "name" : "speed",
+                           "value" : "28",
+                           "unit" : "km/h",
+                           "state" : "ON",
+                           "timestamp" : "20190607T134601Z"
+                           },
+                       {
+                           "name" : "humidity",
+                           "value" : "26",
+                           "unit" : "%",
+                           "state" : "ON",
+                           "timestamp" : "20190607T134601Z"
+                           }],
+"Passengers" : 
+                          {"name":"Driver",
+                           "isPresent":"true",
+                           "timestamp":"20190607T134601Z"
+                          }
+"lidar" : {
+              "angleValue" :"45",
+              "angleUnit" : "C",
+              "distanceValue" : "400",
+              "distanceUnit" : "cm",
+              "state" : "ON",
+              "timestamp" : "20190607T134601Z"  
+              }
+}
