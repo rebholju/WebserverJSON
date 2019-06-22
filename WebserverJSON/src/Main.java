@@ -49,13 +49,8 @@ import org.json.simple.parser.ParseException;
 			 }
 			 
 		 }
-		 
-		 
-			 
-		 
-		 
-		 
-		 
+
+		 //Call Functions
 		public void Main()
 		{	
 			//JSON parser object to parse read file
@@ -88,6 +83,7 @@ import org.json.simple.parser.ParseException;
 	        }
 		}
 		
+		//Set VehicleData
 		public boolean setVehicleData(String JSONString, int vehicleNumber)
 		{
 			JSONParser jsonParser = new JSONParser();
@@ -99,24 +95,12 @@ import org.json.simple.parser.ParseException;
 		    
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss'Z'");
 			LocalDateTime parsedDatePassenger = LocalDateTime.parse(passengers.get("timestamp").toString(),formatter);
-			java.sql.Timestamp sqlTimestampPassenger = java.sql.Timestamp.valueOf(parsedDatePassenger);
+		//	java.sql.Timestamp sqlTimestampPassenger = java.sql.Timestamp.valueOf(parsedDatePassenger);
 		
 		    for(int i= 0;i<sensors.size();i++)
 		    {
 		        JSONObject singleSensor = (JSONObject) sensors.get(i);
-		        
-//		        System.out.println(singleSensor.get("name"));
-//		        System.out.println(singleSensor.get("value"));
-//		        System.out.println(singleSensor.get("unit"));
-//		        System.out.println(singleSensor.get("state"));
-//		        System.out.println(singleSensor.get("timestamp"));
-//		        System.out.println(singleSensor.get("name").toString());
-		        
-//				java.sql.Date sqlDate = java.sql.Date.valueOf(parsedDate.toLocalDate());
-//				java.sql.Time sqlTime = java.sql.Date.valueOf(parsedDate.toLocalTime());
-//				System.out.println(sqlTimestamp);
-//				System.out.println(sqlDate);
-		        
+
 				LocalDateTime parsedDate = LocalDateTime.parse(singleSensor.get("timestamp").toString(),formatter);
 				java.sql.Timestamp sqlTimestamp = java.sql.Timestamp.valueOf(parsedDate);
 
@@ -129,13 +113,13 @@ import org.json.simple.parser.ParseException;
 				    this.preparedStatement.setInt(4, vehicleNumber);
 				    this.preparedStatement.setString(5, singleSensor.get("name").toString());		    
 		            result = this.preparedStatement.executeUpdate();
-//		            System.out.println(result);
-		            System.out.println("Wrote into vehiclecurrentdata");
+		            //System.out.println("Wrote into vehiclecurrentdata");
   
 			    }
 			    catch(Exception ex)
 			    {
 			    	System.out.println("SensorWert noch nicht vorhanden oder Datenbank nicht verbunden"+ex);
+			    	return false;
 			    }
 		    	
 			    
@@ -156,6 +140,7 @@ import org.json.simple.parser.ParseException;
 			    	catch(Exception exception)
 			    	{
 			    		System.out.println("Fehler 2te "+exception);
+			    		return false;
 			    	}
 				    
 		    	try {
@@ -174,6 +159,7 @@ import org.json.simple.parser.ParseException;
 		    	catch(Exception exception)
 		    	{
 		    		System.out.println("Fehler 2te "+exception);
+		    		return false;
 		    	}
 			     
 		      
@@ -183,6 +169,7 @@ import org.json.simple.parser.ParseException;
 			catch(Exception ex)
 			{
 				System.out.println("Fehler beim Parsen" + ex);
+				return false;
 			}
 
 		    return true;
@@ -224,9 +211,10 @@ import org.json.simple.parser.ParseException;
             {
             	System.out.println("Fehler mit Datenbank");
             }
+            JSONObject AuthResponse = new JSONObject();
 			if(firstname!=null && lastname!=null && role!=null)
 			{
-			JSONObject AuthResponse = new JSONObject();
+			
 			
 			AuthResponse.put( "id" , rfidID);                    
 			AuthResponse.put( "firstName"  , firstname);           
@@ -237,8 +225,13 @@ import org.json.simple.parser.ParseException;
 			return AuthResponse.toString();
 			}
 			else
-			{
-				return null;
+			{		
+				AuthResponse.put( "id" , null);                    
+				AuthResponse.put( "firstName"  , null);           
+				AuthResponse.put("lastName"  , null);   
+				AuthResponse.put( "authLevel"  , null);
+				
+				return AuthResponse.toString();
 			}
             
       	}
