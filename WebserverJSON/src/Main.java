@@ -2,6 +2,8 @@
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.rmi.Naming;
 
 import java.sql.*;
@@ -14,6 +16,7 @@ import javax.print.attribute.DateTimeSyntax;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import org.json.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -56,21 +59,16 @@ import org.json.simple.parser.ParseException;
 		public void Main()
 		{	
 			//JSON parser object to parse read file
-			JSONParser jsonParser = new JSONParser();
 			
-			try (FileReader reader = new FileReader("WikiBeispiel.json"))
+			
+			try
 			{
-				//Read JSON file
-	            Object obj = jsonParser.parse(reader);
+				String JSONString = new String(Files.readAllBytes(Paths.get("WikiBeispiel.json"))); 
+	            setVehicleData(JSONString,1);
 	            
-	            setVehicleData(obj,1);
-	            
-	        } catch (FileNotFoundException e) {
-	            e.printStackTrace();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        } catch (ParseException e) {
-	            e.printStackTrace();
+	        } catch (Exception ex) 
+			{
+	        	System.out.println("Fehler String"+ ex);
 	        }
 			
 			
@@ -78,25 +76,23 @@ import org.json.simple.parser.ParseException;
 			try (FileReader reader = new FileReader("AuthRequest.json"))
 			{
 				//Read JSON file
-	            Object obj = jsonParser.parse(reader);
+				String JSONString = new String(Files.readAllBytes(Paths.get("AuthRequest.json"))); 
 	            
-	            JSONObject Response = authentificateDriver(obj);
+	            String Response = authentificateDriver(JSONString);
 	            System.out.println(Response);
 	            
 	        } catch (FileNotFoundException e) {
 	            e.printStackTrace();
 	        } catch (IOException e) {
 	            e.printStackTrace();
-	        } catch (ParseException e) {
-	            e.printStackTrace();
 	        }
-
 		}
 		
-		public boolean setVehicleData(Object obj, int vehicleNumber)
+		public boolean setVehicleData(String JSONString, int vehicleNumber)
 		{
-			
-		    JSONObject data = (JSONObject) obj;
+			JSONParser jsonParser = new JSONParser();
+			try {
+			JSONObject data = (JSONObject) jsonParser.parse(JSONString);
 		    
 		    JSONArray sensors = (JSONArray) data.get("Sensors");
 		    JSONObject passengers = (JSONObject) data.get("Passengers");
@@ -182,48 +178,52 @@ import org.json.simple.parser.ParseException;
 			     
 		      
 		    }
+		    
+			}
+			catch(Exception ex)
+			{
+				System.out.println("Fehler beim Parsen" + ex);
+			}
 
 		    return true;
 		}
 
 		//authentificate Driver
-		public JSONObject authentificateDriver(Object obj)
+		public String authentificateDriver(String JSONString)
 		{
       	  String firstname = null;
       	  String lastname = null;
       	  String role = null;
-			
-			
-			JSONObject data = (JSONObject) obj;
+      	  JSONParser jsonParser = new JSONParser();
+      	  
+      	  
+      	try {
+      		JSONObject data = (JSONObject) jsonParser.parse(JSONString);
 			int rfidID = Integer.parseInt(data.get("id").toString());
-			//System.out.println(rfidID);
 			
-	            try {
-	            	
-		            this.preparedStatement = this.conn.prepareStatement("select firstname, lastname, role from users where rfidID=?");
-		            this.preparedStatement.setInt(1,rfidID);
-		            this.resultSet = this.preparedStatement.executeQuery();
-		            
-		            while (resultSet.next()) {
-		            	int i = 0;
-		            	  firstname = resultSet.getString("firstname");
-		            	  lastname = resultSet.getString("lastname");
-		            	  role = resultSet.getString("role");
-		            	  if(i<0)
-		            	  {
-		            		  System.out.println("RFID mehrmals vergeben");
-		            	  }
-		            	  i++;
-		            	}
-		            
-	            }
-	            catch(Exception ex)
-	            {
-	            	System.out.println("Fehler mit Datenbank");
-	            }
+            try {
+            	
+	            this.preparedStatement = this.conn.prepareStatement("select firstname, lastname, role from users where rfidID=?");
+	            this.preparedStatement.setInt(1,rfidID);
+	            this.resultSet = this.preparedStatement.executeQuery();
 	            
-
-			
+	            while (resultSet.next()) {
+	            	int i = 0;
+	            	  firstname = resultSet.getString("firstname");
+	            	  lastname = resultSet.getString("lastname");
+	            	  role = resultSet.getString("role");
+	            	  if(i<0)
+	            	  {
+	            		  System.out.println("RFID mehrmals vergeben");
+	            	  }
+	            	  i++;
+	            	}
+	            
+            }
+            catch(Exception ex)
+            {
+            	System.out.println("Fehler mit Datenbank");
+            }
 			if(firstname!=null && lastname!=null && role!=null)
 			{
 			JSONObject AuthResponse = new JSONObject();
@@ -232,13 +232,21 @@ import org.json.simple.parser.ParseException;
 			AuthResponse.put( "firstName"  , firstname);           
 			AuthResponse.put("lastName"  , lastname);   
 			AuthResponse.put( "authLevel"  , role);
-			return AuthResponse;
+			
+			
+			return AuthResponse.toString();
 			}
 			else
 			{
 				return null;
 			}
-				
+            
+      	}
+      	catch (Exception err){
+      	     System.out.println("Error"+ err);
+      	     return null;
+      	}
+	
 		}
 
 
