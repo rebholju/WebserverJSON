@@ -4,5 +4,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="json-simple-1.1.jar/json-simple-1.1.jar"/>
 	<classpathentry kind="lib" path="jdbc.jar/jdbc.jar"/>
+	<classpathentry kind="lib" path="org.eclipse.paho.client.mqttv3-1.2.0-sources.jar"/>
+	<classpathentry kind="lib" path="org.eclipse.paho.client.mqttv3-1.2.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
