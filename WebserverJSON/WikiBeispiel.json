@@ -1,21 +1,21 @@
 {
 "Sensors" : [ {
-                           "name" : "temperature",
-                           "value" : "100",
+                           "name" : "temperatures",
+                           "value" : "110",
                            "unit" : "C",
                            "state" : "ON",
                            "timestamp" : "20190607T134601Z"
                            },
                        {
-                           "name" : "speed",
-                           "value" : "200",
+                           "name" : "speeds",
+                           "value" : "220",
                            "unit" : "km/h",
                            "state" : "ON",
                            "timestamp" : "20190607T134601Z"
                            },
                        {
-                           "name" : "humidity",
-                           "value" : "300",
+                           "name" : "humiditys",
+                           "value" : "30",
                            "unit" : "%",
                            "state" : "ON",
                            "timestamp" : "20190607T134601Z"
