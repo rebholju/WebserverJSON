@@ -9,7 +9,6 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 	public class VehicleCallback implements MqttCallback {
 
-	    private boolean isDriverPresent = false;
 
 	    @Override
 	    public void connectionLost(Throwable throwable) {

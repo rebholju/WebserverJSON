@@ -43,7 +43,7 @@ public class VehicleComController
 	    this.status = false;
 	}
 	
-	public void initializationMQTT(String topics, boolean cleanSession, String userName, String password) 
+	public void initializationMQTT(String topic, boolean cleanSession, String userName, String password, int qos) 
 	{
         try {
             persistence = new MemoryPersistence();
@@ -52,16 +52,13 @@ public class VehicleComController
             options.setAutomaticReconnect(true);
             options.setUserName(userName);
             options.setPassword(password.toCharArray());
-            options.setWill("/V1/Driver/AuthRequest/", "Client got disconnected suddently".getBytes(), 2, true);
-            options.setWill("/V1/Driver/LogoutRequest/", "Client got disconnected suddently".getBytes(), 2, true);
-            options.setWill("/V1/Sensors/", "Client got disconnected suddently".getBytes(), 2, true);
-            options.setWill("/V1/OS/", "Client got disconnected suddently".getBytes(), 2, true);
+            options.setWill("/V1/Driver/AuthResponse/", "Client got disconnected suddently".getBytes(), qos, true);
             w4MqttClient = new MqttClient(broker, clientId, persistence);
             w4MqttClient.setCallback(new VehicleCallback());
             w4MqttClient.connect(options);
             if (connect()) {
                 // subscribe to topics
-                w4MqttClient.subscribe(topics, 2);
+                w4MqttClient.subscribe(topic, qos);
             } else {
                 System.out.println("Client couldn't connect to the Server");
             }
@@ -82,7 +79,6 @@ public class VehicleComController
         try {
             if (w4MqttClient != null) {
                 System.out.println("Trying to connect..");
-                //w4MqttClient.connect(options);
                 status = true;
                 return true;
             } else if (!status){
@@ -115,10 +111,8 @@ public class VehicleComController
 */
     
 	public void subscribe(String topic, int qos) throws MqttException {
-		w4MqttClient.subscribe(topic, 2);
 		if (w4MqttClient != null && w4MqttClient.isConnected()) {
             try {
-                //w4MqttClient.connect(options);
                 w4MqttClient.subscribe(topic, qos);
                 System.out.println(" Subscribed to " + topic);
             } catch (MqttException e) {
@@ -145,7 +139,6 @@ public class VehicleComController
             message.setQos(qos);
             System.out.println("Publishing message: " + msg);
             try {
-            	 //w4MqttClient.connect(options);
                  System.out.println(" connected ");
                  w4MqttClient.publish(topic, message);
             } catch (MqttException e) {
