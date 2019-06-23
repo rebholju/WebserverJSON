@@ -4,6 +4,8 @@
  */
 
 import java.io.InputStream;
+
+import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -22,10 +24,10 @@ public class VehicleComController
     private String userName = "w4"; 
     private String password = "";
     private MemoryPersistence persistence;
-	private MqttClient w4MqttClient;
+	private static MqttClient w4MqttClient;
 	private MqttConnectOptions options;
 	private MqttCallback callback;
-	private boolean status;	
+	private static boolean status;	
 	
 	public VehicleComController() {
 		this.status = false;
@@ -41,7 +43,7 @@ public class VehicleComController
 	    this.status = false;
 	}
 	
-	public void init(String topicFilter, boolean cleanSession, String userName, String password) 
+	public void initializationMQTT(String topics, boolean cleanSession, String userName, String password) 
 	{
         try {
             persistence = new MemoryPersistence();
@@ -56,9 +58,10 @@ public class VehicleComController
             options.setWill("/V1/OS/", "Client got disconnected suddently".getBytes(), 2, true);
             w4MqttClient = new MqttClient(broker, clientId, persistence);
             w4MqttClient.setCallback(new VehicleCallback());
+            w4MqttClient.connect(options);
             if (connect()) {
                 // subscribe to topics
-                w4MqttClient.subscribe(topicFilter, 2);
+                w4MqttClient.subscribe(topics, 2);
             } else {
                 System.out.println("Client couldn't connect to the Server");
             }
@@ -77,17 +80,21 @@ public class VehicleComController
     public boolean connect() 
     {
         try {
-            if (w4MqttClient != null && !status) {
+            if (w4MqttClient != null) {
                 System.out.println("Trying to connect..");
-                w4MqttClient.connect(options);
+                //w4MqttClient.connect(options);
                 status = true;
                 return true;
-            } else {
-                System.out.println("Client is null !");
-                status = false;
-                return false;
+            } else if (!status){
+            	System.out.println("Trying to connect..");
+                IMqttToken iMqttToken = w4MqttClient.connectWithResult(options);
+                iMqttToken.waitForCompletion();
+                boolean connectResponse = iMqttToken.getSessionPresent();
+                System.out.println("Connection status: " + connectResponse);
+                status = connectResponse;
+                return connectResponse;
             }
-
+            return false;
         } catch (MqttException e) {
             e.printStackTrace();
             status = false;
@@ -107,14 +114,13 @@ public class VehicleComController
 	}
 */
     
-	public void subscribe(String topicpattern, int qos) throws MqttException {
-		w4MqttClient.subscribe(topicpattern, 2);
-		if (w4MqttClient != null) {
+	public void subscribe(String topic, int qos) throws MqttException {
+		w4MqttClient.subscribe(topic, 2);
+		if (w4MqttClient != null && w4MqttClient.isConnected()) {
             try {
-                w4MqttClient.connect(options);
-                w4MqttClient.subscribe(topicpattern, qos);
-                System.out.println(" Subscribed to " + topicpattern);
-                w4MqttClient.disconnect();
+                //w4MqttClient.connect(options);
+                w4MqttClient.subscribe(topic, qos);
+                System.out.println(" Subscribed to " + topic);
             } catch (MqttException e) {
                 e.printStackTrace();
                 disconnect();
@@ -129,20 +135,19 @@ public class VehicleComController
      * @param topic The topic where the msg should be published
      * @param msg   The content that should be published
      */
-    public void publish(String topic, String msg, int qos) {
+    public synchronized static void publish(String topic, String msg, int qos) {
         if (qos < 0 || qos > 2) {
             System.out.println("Invalid QoS: " + qos);
             return;
         }
-        if (status && w4MqttClient != null) {
+        if (status && w4MqttClient != null && w4MqttClient.isConnected()) {
             MqttMessage message = new MqttMessage(msg.getBytes());
             message.setQos(qos);
             System.out.println("Publishing message: " + msg);
             try {
-            	 w4MqttClient.connect(options);
+            	 //w4MqttClient.connect(options);
                  System.out.println(" connected ");
                  w4MqttClient.publish(topic, message);
-                 w4MqttClient.disconnect();
             } catch (MqttException e) {
                 e.printStackTrace();
                 disconnect();
@@ -156,7 +161,7 @@ public class VehicleComController
     /**
      * This Method disconnects the Client from the Broker and throws an exception in case smth wrong happened.
      */
-    private void disconnect() {
+    private static void disconnect() {
         try {
             System.out.println("Disconnecting..");
             w4MqttClient.disconnect();
@@ -168,7 +173,7 @@ public class VehicleComController
         }
     }
 
-    public void close() {
+    public static void close() {
         if (status) {
             disconnect();
             try {
