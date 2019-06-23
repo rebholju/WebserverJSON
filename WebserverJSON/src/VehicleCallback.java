@@ -6,6 +6,8 @@
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.logging.Logger;
+import org.eclipse.paho.client.mqttv3.logging.LoggerFactory;
 
 	public class VehicleCallback implements MqttCallback {
 
@@ -15,7 +17,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 	        System.out.println("Lost Connection to the server !..");
 	        System.out.println(throwable.getStackTrace());
 	        System.out.println("Cause: " + throwable.getCause());
-
+	        //Logger LOG = LoggerFactory.getLogger(String messageCatalogName, String loggerID);
 	        // TODO: Log Severe Error
 
 
