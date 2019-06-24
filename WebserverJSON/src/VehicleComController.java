@@ -17,7 +17,7 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 public class VehicleComController 
 	{
 
-	private String ServerURI = "localhost";
+	private String ServerURI = "tcp://localhost";
     private String port = "8884";
     private String broker = ServerURI + ":" + port;
     private String clientId = "Webservice_W4";
