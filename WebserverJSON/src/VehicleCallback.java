@@ -38,7 +38,11 @@ import org.eclipse.paho.client.mqttv3.logging.LoggerFactory;
 	        
 	        if (topic.equals("/SysArch/V1/Driver/LogoutRequest/")) 
 	        {
-	        	System.out.println("Message:" + mqttMessage.toString()); 
+	        	System.out.println("Message:" + mqttMessage.toString());
+	        	String logoutRequest = new String(mqttMessage.getPayload());
+	        	VehicleDbModel DriverLogout = new VehicleDbModel();
+	        	Boolean status = DriverLogout.logoutRequest(logoutRequest);
+	        	
 	        }
 	        
 	        if (topic.equals("/SysArch/V1/Sensors/")) 
