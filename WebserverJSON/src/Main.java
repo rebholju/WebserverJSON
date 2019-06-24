@@ -68,7 +68,7 @@ import org.json.simple.parser.ParseException;
 			
 			
 			
-			try (FileReader reader = new FileReader("AuthRequest.json"))
+			try 
 			{
 				//Read JSON file
 				String JSONString = new String(Files.readAllBytes(Paths.get("AuthRequest.json"))); 
@@ -76,11 +76,39 @@ import org.json.simple.parser.ParseException;
 	            String Response = authentificateDriver(JSONString);
 	            System.out.println(Response);
 	            
-	        } catch (FileNotFoundException e) {
-	            e.printStackTrace();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
+	        } 
+			catch (Exception ex) 
+			{
+				System.out.println("Fehler String"+ ex);
+			}
+			
+			try 
+			{
+				//Read JSON file
+				String JSONString = new String(Files.readAllBytes(Paths.get("LogoutRequest.json"))); 
+	            
+	            Boolean Response = logoutRequest(JSONString);
+	            System.out.println(Response);
+	            
+	        } 
+			catch (Exception ex) 
+			{
+				System.out.println("Fehler String"+ ex);
+			}
+
+			
+			
+				//Get Availabile Vehicles  
+	            String[] Response = getavailabileVehicles();
+	            
+	            for(int i =0;i<Response.length;i++)
+	            {
+	            System.out.println("\n"+Response[i]);
+	            }
+
+			
+			
+	           
 		}
 		
 		//Set VehicleData
@@ -242,7 +270,114 @@ import org.json.simple.parser.ParseException;
 	
 		}
 
+		//delete User from actualSensorData
+		public boolean logoutRequest(String JSONString)
+		{
+			
+	      	  String username = null;
+			JSONParser jsonParser = new JSONParser();
+			
+			
+		  	  
+	      	try {
+	      		JSONObject data = (JSONObject) jsonParser.parse(JSONString);
+				int rfidID = Integer.parseInt(data.get("id").toString());
+				
+	            try {
+	            	
+	                try {
+	                	
+	    	            this.preparedStatement = this.conn.prepareStatement("select username from users where rfidID=?");
+	    	            this.preparedStatement.setInt(1,rfidID);
+	    	            this.resultSet = this.preparedStatement.executeQuery();
+	    	            
+	    	            while (resultSet.next()) {
+	    	            	int i = 0;
+	    	            	  username = resultSet.getString("username");
+	    	            	  if(i<0)
+	    	            	  {
+	    	            		  System.out.println("RFID mehrmals vergeben");
+	    	            	  }
+	    	            	  i++;
+	    	            	}
+	    	            
+	                }
+	                catch(Exception ex)
+	                {
+	                	System.out.println("Fehler mit Datenbank");
+	                }
+	            	
+	            	
+		            this.preparedStatement = this.conn.prepareStatement("UPDATE vehiclecurrentdata SET driver=? WHERE driver=?");
+		            this.preparedStatement.setString(1,"No Driver authetificated");
+		            this.preparedStatement.setString(2,username);
+		            this.result = this.preparedStatement.executeUpdate();
+		            
+		            if(this.result != 0)
+		            {
+		            	System.out.println("driver deselected");
+		            	return true;
+		            }
+		            else
+		            {
+		            	return false;
+		            }
+		            	
+	            }
+	            catch(Exception ex)
+	            {
+	            	System.out.println("Fehler mit Datenbank");
+	            	return false;
+	            }
+	            
+	      	}
+	      	catch (Exception err){
+	      	     System.out.println("Error"+ err);
+	      	   return false;
+	      	}
+			
+			
+			
+			
+			
+		}
 
+		// Get StringArray of existing Vehiclenumbers
+		public String[] getavailabileVehicles()
+		{
+//			String[] vehicles = new String[10];
+			String[] vehicles = {"notSet","notSet","notSet","notSet","notSet","notSet","notSet","notSet","notSet","notSet",};
+			int counter2=0;
+			try {
+            this.preparedStatement = this.conn.prepareStatement("select VehicleNumber from vehiclecurrentdata");
+            this.resultSet = this.preparedStatement.executeQuery();
+           
+            while (resultSet.next()) {
+                    int counter = 0;
+                    
+                    for(int u=0;u<vehicles.length;u++)
+                    {
+                        if(vehicles[u].toString().equals(this.resultSet.getString("vehicleNumber")))
+                        {
+                            counter++;
+                            
+                        }
+                    }
+                    
+                    if(counter==0)
+                    {
+                        vehicles[counter2] = this.resultSet.getString("vehicleNumber");
+                        counter2++;
+                    }
+                }
+            }
+			catch(Exception ex)
+			{
+				System.out.println("Fehler mit Datenbank"+ex);
+			}
+            
+			return vehicles;
+		}
 	}
 
 		
@@ -254,8 +389,8 @@ import org.json.simple.parser.ParseException;
 			public static void main(String[] args) 
 			{
 
-				//VehicleDbModel refVehicleDbModel = new VehicleDbModel();
-				//refVehicleDbModel.Main();
+//				VehicleDbModel refVehicleDbModel = new VehicleDbModel();
+//				refVehicleDbModel.Main();
 				VehicleComController MQTTConV1 = new VehicleComController();
 				String[] topics = {"/SysArch/V1/Driver/AuthRequest/", "/SysArch/V1/Driver/LogoutRequest/", "/SysArch/V1/Sensors/", "/SysArch/V1/OS/"};
 				int[] qos = {0,0,0,0};
