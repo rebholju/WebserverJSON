@@ -51,7 +51,7 @@ public class VehicleComController
             options.setAutomaticReconnect(true);
             options.setUserName(userName);
             options.setPassword(password.toCharArray());
-            options.setWill("/V1/Driver/AuthResponse/", "Client got disconnected suddently".getBytes(), 0, true);
+            //options.setWill("/SysArch/V1/Driver/AuthResponse/", "Client got disconnected suddently".getBytes(), 0, true);
             w4MqttClient = new MqttClient(broker, clientId, persistence);
             w4MqttClient.setCallback(new VehicleCallback());
             if (connect()) {
@@ -142,6 +142,7 @@ public class VehicleComController
             try {
                  System.out.println(" connected ");
                  w4MqttClient.publish(topic, message);
+                 System.out.println(" Bis hier? ");
             } catch (MqttException e) {
                 e.printStackTrace();
                 disconnect();

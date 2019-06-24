@@ -33,7 +33,7 @@ import org.eclipse.paho.client.mqttv3.logging.LoggerFactory;
 	        	String authRequest = new String(mqttMessage.getPayload());
 	        	VehicleDbModel DriverAuth = new VehicleDbModel();
 	        	String authResponse = DriverAuth.authentificateDriver(authRequest);
-	        	VehicleComController.publish("/SysArch/V1/Driver/AuthResponse/", authResponse, 0);
+	        	VehicleComController.publish("/SysArch/V1/Driver/AuthResponse", authResponse, 0);
 	        }
 	        
 	        else if (topic.equals("/SysArch/V1/Driver/LogoutRequest/")) 
