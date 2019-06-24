@@ -33,10 +33,10 @@ import org.eclipse.paho.client.mqttv3.logging.LoggerFactory;
 	        	String authRequest = new String(mqttMessage.getPayload());
 	        	VehicleDbModel DriverAuth = new VehicleDbModel();
 	        	String authResponse = DriverAuth.authentificateDriver(authRequest);
-	        	VehicleComController.publish("/SysArch/V1/Driver/AuthResponse/", authResponse, 2);
+	        	VehicleComController.publish("/SysArch/V1/Driver/AuthResponse/", authResponse, 0);
 	        }
 	        
-	        if (topic.equals("/SysArch/V1/Driver/LogoutRequest/")) 
+	        else if (topic.equals("/SysArch/V1/Driver/LogoutRequest/")) 
 	        {
 	        	System.out.println("Message:" + mqttMessage.toString());
 	        	String logoutRequest = new String(mqttMessage.getPayload());
@@ -45,7 +45,7 @@ import org.eclipse.paho.client.mqttv3.logging.LoggerFactory;
 	        	
 	        }
 	        
-	        if (topic.equals("/SysArch/V1/Sensors/")) 
+	        else if (topic.equals("/SysArch/V1/Sensors/")) 
 	        {
 	        	System.out.println("Message:" + mqttMessage.toString());
 	        	String sensorData = new String(mqttMessage.getPayload());
@@ -53,7 +53,7 @@ import org.eclipse.paho.client.mqttv3.logging.LoggerFactory;
 	        	Boolean status = SensorDataV1.setVehicleData(sensorData, 1);
 	        	System.out.println("Writing sensor values in DB is " + status); 
 	        }
-	        if (topic.equals("/SysArch/V1/OS/")) 
+	        else if (topic.equals("/SysArch/V1/OS/")) 
 	        {
 	        	System.out.println("Message:" + mqttMessage.toString()); 
 	        }
