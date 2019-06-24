@@ -17,12 +17,12 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 public class VehicleComController 
 	{
 
-	private String ServerURI = "tcp://iot.eclipse.org";
-    private String port = "1883";
+	private String ServerURI = "localhost";
+    private String port = "8884";
     private String broker = ServerURI + ":" + port;
     private String clientId = "Webservice_W4";
-    private String userName = "w4"; 
-    private String password = "";
+    private String userName = "W4"; 
+    private String password = "DEF";
     private MemoryPersistence persistence;
 	private static MqttClient w4MqttClient;
 	private MqttConnectOptions options;
@@ -33,9 +33,8 @@ public class VehicleComController
 		this.status = false;
 	}
 	
-	public VehicleComController(String ServerURI, String port, String clientId, MqttCallback callback) 
+	public VehicleComController(String ServerURI, String port, String clientId) 
 	{
-		this.callback = callback;
 	    this.ServerURI = ServerURI;
 	    this.port = port;
 	    this.clientId = clientId;
@@ -43,7 +42,7 @@ public class VehicleComController
 	    this.status = false;
 	}
 	
-	public void initializationMQTT(String topic, boolean cleanSession, String userName, String password, int qos) 
+	public void initializationMQTT(String[] topics, boolean cleanSession, String userName, String password, int[] qos) 
 	{
         try {
             persistence = new MemoryPersistence();
@@ -52,13 +51,15 @@ public class VehicleComController
             options.setAutomaticReconnect(true);
             options.setUserName(userName);
             options.setPassword(password.toCharArray());
-            options.setWill("/V1/Driver/AuthResponse/", "Client got disconnected suddently".getBytes(), qos, true);
+            options.setWill("/V1/Driver/AuthResponse/", "Client got disconnected suddently".getBytes(), 0, true);
             w4MqttClient = new MqttClient(broker, clientId, persistence);
             w4MqttClient.setCallback(new VehicleCallback());
-            w4MqttClient.connect(options);
             if (connect()) {
+            	// connect to broker
+            	w4MqttClient.connect(options);
                 // subscribe to topics
-                w4MqttClient.subscribe(topic, qos);
+                //w4MqttClient.subscribe(topics, qos);
+            	subscribe(topics, qos);
             } else {
                 System.out.println("Client couldn't connect to the Server");
             }
@@ -110,7 +111,7 @@ public class VehicleComController
 	}
 */
     
-	public void subscribe(String topic, int qos) throws MqttException {
+	public void subscribe(String[] topic, int[] qos) throws MqttException {
 		if (w4MqttClient != null && w4MqttClient.isConnected()) {
             try {
                 w4MqttClient.subscribe(topic, qos);

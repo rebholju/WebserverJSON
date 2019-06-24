@@ -58,7 +58,7 @@ import org.eclipse.paho.client.mqttv3.logging.LoggerFactory;
 
 	    @Override
 	    public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
-
+	    	// TODO: Log AKN message
 	    }
 	}
 
