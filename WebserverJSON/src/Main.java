@@ -449,10 +449,16 @@ import org.json.simple.parser.JSONParser;
 				DatabaseThread thread = DatabaseThread.getinstance();
 				
 				thread.start();
-				thread.run();
 				
 				
-				while(true) {}
+				
+				//Test geht nut wenn es sich beim Zweiten element des MQTTObject auch um ein string handelt
+//		    	MQTTObject object = new MQTTObject("HALLO", "EIN TEST");
+//		    	 thread.addtoList(object);
+//			    	 object = new MQTTObject("HALLO2", "EIN TEST2");
+//			    	 thread.addtoList(object);
+//			    	 
+				
 
 			}
 		}
