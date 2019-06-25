@@ -424,27 +424,16 @@ import org.json.simple.parser.ParseException;
 			public static void main(String[] args) 
 			{
 
-<<<<<<< HEAD
-				VehicleDbModel refVehicleDbModel = new VehicleDbModel();
-				refVehicleDbModel.Main();
-//				VehicleComController MQTTConV1 = new VehicleComController();
-//				String[] topics = {"/SysArch/V1/Driver/AuthRequest/", "/SysArch/V1/Driver/LogoutRequest/", "/SysArch/V1/Sensors/", "/SysArch/V1/OS/"};
-//				int[] qos = {0,0,0,0};
-//				MQTTConV1.initializationMQTT(topics, true, "W4", "DEF", qos);
-//				
-//				while(true) {}
-=======
+
 //				VehicleDbModel refVehicleDbModel = new VehicleDbModel();
 //				refVehicleDbModel.Main();
-				
-				// TODO: Aufruf MQTT
 				VehicleComController MQTTConV1 = new VehicleComController();
 				String[] topics = {"/SysArch/V1/Driver/AuthRequest/", "/SysArch/V1/Driver/LogoutRequest/", "/SysArch/V1/Sensors/", "/SysArch/V1/OS/"};
 				int[] qos = {0,0,0,0};
 				MQTTConV1.initializationMQTT(topics, true, "W4", "DEF", qos);
 				
 				while(true) {}
->>>>>>> branch 'master' of https://github.com/rebholju/WebserverJSON.git
+
 			}
 		}
 
