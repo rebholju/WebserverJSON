@@ -41,7 +41,6 @@ import org.json.simple.parser.ParseException;
 			 this.conn = DriverManager.getConnection("jdbc:mysql://localhost/SysArch","root", "");
 			 System.out.print("Database is connected !");
 
-//	            this.conn.close();
 			 }
 			 catch(Exception e)
 			 {
@@ -119,15 +118,19 @@ import org.json.simple.parser.ParseException;
 			JSONObject data = (JSONObject) jsonParser.parse(JSONString);
 		    
 		    JSONArray sensors = (JSONArray) data.get("Sensors");
-		    JSONObject passengers = (JSONObject) data.get("Passengers");
+		    JSONArray passengersarray = (JSONArray) data.get("Passengers");
+		    
+		    JSONObject passengers = (JSONObject) passengersarray.get(0);
+		    // nur Driver
+		    
 		    
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss'Z'");
 			LocalDateTime parsedDatePassenger = LocalDateTime.parse(passengers.get("timestamp").toString(),formatter);
 		//	java.sql.Timestamp sqlTimestampPassenger = java.sql.Timestamp.valueOf(parsedDatePassenger);
-		
 		    for(int i= 0;i<sensors.size();i++)
 		    {
 		        JSONObject singleSensor = (JSONObject) sensors.get(i);
+		        
 
 				LocalDateTime parsedDate = LocalDateTime.parse(singleSensor.get("timestamp").toString(),formatter);
 				java.sql.Timestamp sqlTimestamp = java.sql.Timestamp.valueOf(parsedDate);
@@ -148,6 +151,11 @@ import org.json.simple.parser.ParseException;
 			    {
 			    	System.out.println("SensorWert noch nicht vorhanden oder Datenbank nicht verbunden"+ex);
 			    	return false;
+			    }
+			    finally
+			    {
+			    	preparedStatement.close();
+			    	
 			    }
 		    	
 			    
@@ -170,7 +178,12 @@ import org.json.simple.parser.ParseException;
 			    		System.out.println("Fehler 2te "+exception);
 			    		return false;
 			    	}
-				    
+				    finally
+				    {
+				    	preparedStatement.close();
+				    	
+				    }
+					    
 		    	try {
 		    		
 					    this.preparedStatement = this.conn.prepareStatement("INSERT INTO vehiclehistoricaldata(vehicleNumber, sensor, value, timeStamp, driver) values(?, ?, ?, ?, ?)");
@@ -189,9 +202,14 @@ import org.json.simple.parser.ParseException;
 		    		System.out.println("Fehler 2te "+exception);
 		    		return false;
 		    	}
-			     
+
+		    	
 		      
 		    }
+		    
+		    	preparedStatement.close();
+		    	conn.close();
+		    
 		    
 			}
 			catch(Exception ex)
@@ -199,6 +217,7 @@ import org.json.simple.parser.ParseException;
 				System.out.println("Fehler beim Parsen" + ex);
 				return false;
 			}
+
 
 		    return true;
 		}
@@ -227,6 +246,14 @@ import org.json.simple.parser.ParseException;
 	            	  firstname = resultSet.getString("firstname");
 	            	  lastname = resultSet.getString("lastname");
 	            	  role = resultSet.getString("role");
+	            	  if(role == "10")
+	            	  {
+	            		  role = "1";
+	            	  }
+	            	  else
+	            	  {
+	            		  role = "2";
+	            	  }
 	            	  if(i<0)
 	            	  {
 	            		  System.out.println("RFID mehrmals vergeben");
@@ -239,6 +266,13 @@ import org.json.simple.parser.ParseException;
             {
             	System.out.println("Fehler mit Datenbank");
             }
+		    finally
+		    {
+		    	resultSet.close();
+		    	preparedStatement.close();
+		    	conn.close();
+		    }
+            
             JSONObject AuthResponse = new JSONObject();
 			if(firstname!=null && lastname!=null && role!=null)
 			{
@@ -254,19 +288,20 @@ import org.json.simple.parser.ParseException;
 			}
 			else
 			{		
-				AuthResponse.put( "id" , null);                    
-				AuthResponse.put( "firstName"  , null);           
-				AuthResponse.put("lastName"  , null);   
-				AuthResponse.put( "authLevel"  , null);
+				AuthResponse.put( "id" , rfidID);                    
+				AuthResponse.put( "firstName"  , "");           
+				AuthResponse.put("lastName"  , "");   
+				AuthResponse.put( "authLevel"  , "");
 				
 				return AuthResponse.toString();
 			}
             
       	}
       	catch (Exception err){
-      	     System.out.println("Error"+ err);
+      	     System.out.println("Error "+ err);
       	     return null;
       	}
+      	
 	
 		}
 
@@ -309,7 +344,7 @@ import org.json.simple.parser.ParseException;
 	            	
 	            	
 		            this.preparedStatement = this.conn.prepareStatement("UPDATE vehiclecurrentdata SET driver=? WHERE driver=?");
-		            this.preparedStatement.setString(1,"No Driver authetificated");
+		            this.preparedStatement.setString(1,"No Driver authentificated");
 		            this.preparedStatement.setString(2,username);
 		            this.result = this.preparedStatement.executeUpdate();
 		            
@@ -389,14 +424,14 @@ import org.json.simple.parser.ParseException;
 			public static void main(String[] args) 
 			{
 
-//				VehicleDbModel refVehicleDbModel = new VehicleDbModel();
-//				refVehicleDbModel.Main();
-				VehicleComController MQTTConV1 = new VehicleComController();
-				String[] topics = {"/SysArch/V1/Driver/AuthRequest/", "/SysArch/V1/Driver/LogoutRequest/", "/SysArch/V1/Sensors/", "/SysArch/V1/OS/"};
-				int[] qos = {0,0,0,0};
-				MQTTConV1.initializationMQTT(topics, true, "W4", "DEF", qos);
-				
-				while(true) {}
+				VehicleDbModel refVehicleDbModel = new VehicleDbModel();
+				refVehicleDbModel.Main();
+//				VehicleComController MQTTConV1 = new VehicleComController();
+//				String[] topics = {"/SysArch/V1/Driver/AuthRequest/", "/SysArch/V1/Driver/LogoutRequest/", "/SysArch/V1/Sensors/", "/SysArch/V1/OS/"};
+//				int[] qos = {0,0,0,0};
+//				MQTTConV1.initializationMQTT(topics, true, "W4", "DEF", qos);
+//				
+//				while(true) {}
 			}
 		}
 
