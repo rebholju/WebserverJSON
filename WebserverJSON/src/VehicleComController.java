@@ -51,12 +51,12 @@ public class VehicleComController
             options = new MqttConnectOptions();
             options.setCleanSession(cleanSession);
             options.setAutomaticReconnect(true);
-            w4MqttClient.setTimeToWait(10000);
             options.setUserName(userName);
             options.setPassword(password.toCharArray());
             //options.setWill("/SysArch/V1/Driver/AuthResponse/", "Client got disconnected suddently".getBytes(), 0, true);
             w4MqttClient = new MqttClient(broker, clientId, persistence);
             w4MqttClient.setCallback(new VehicleCallback());
+            w4MqttClient.setTimeToWait((long) 10000);
             if (connect()) {
             	// connect to broker
             	w4MqttClient.connect(options);
