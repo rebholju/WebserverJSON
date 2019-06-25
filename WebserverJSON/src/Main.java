@@ -16,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 //import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 //import org.json.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -428,25 +429,30 @@ import org.json.simple.parser.JSONParser;
 			return vehicles;
 		}
 	}
-
-		
-		
-
+	 
+	 
+	 
 		
 		public class Main {
 		
 			public static void main(String[] args) 
 			{
-
-
-				VehicleDbModel refVehicleDbModel = new VehicleDbModel();
-				refVehicleDbModel.Main();
-//				VehicleComController MQTTConV1 = new VehicleComController();
-//				String[] topics = {"/SysArch/V1/Driver/AuthRequest/", "/SysArch/V1/Driver/LogoutRequest/", "/SysArch/V1/Sensors/", "/SysArch/V1/OS/"};
-//				int[] qos = {0,0,0,0};
-//				MQTTConV1.initializationMQTT(topics, true, "W4", "DEF", qos);
-//				
-//				while(true) {}
+//
+//
+//				VehicleDbModel refVehicleDbModel = new VehicleDbModel();
+//				refVehicleDbModel.Main();
+				VehicleComController MQTTConV1 = new VehicleComController();
+				String[] topics = {"/SysArch/V1/Driver/AuthRequest/", "/SysArch/V1/Driver/LogoutRequest/", "/SysArch/V1/Sensors/", "/SysArch/V1/OS/"};
+				int[] qos = {0,0,0,0};
+				MQTTConV1.initializationMQTT(topics, true, "W4", "DEF", qos);
+				
+				DatabaseThread thread = DatabaseThread.getinstance();
+				
+				thread.start();
+				thread.run();
+				
+				
+				while(true) {}
 
 			}
 		}
