@@ -450,7 +450,7 @@ import org.json.simple.parser.JSONParser;
 				
 				thread.start();
 				
-				
+				while(true) {}
 				
 				//Test geht nut wenn es sich beim Zweiten element des MQTTObject auch um ein string handelt
 //		    	MQTTObject object = new MQTTObject("HALLO", "EIN TEST");
