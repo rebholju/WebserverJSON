@@ -1,34 +1,36 @@
 {
-"Sensors" : [ {
-                           "name" : "test",
-                           "value" : "110",
-                           "unit" : "C",
-                           "state" : "ON",
-                           "timestamp" : "20190607T134601Z"
-                           },
-                       {
-                           "name" : "test2",
-                           "value" : "220",
-                           "unit" : "km/h",
-                           "state" : "ON",
-                           "timestamp" : "20190607T134601Z"
-                           },
-                       {
-                           "name" : "test3",
-                           "value" : "30",
-                           "unit" : "%",
-                           "state" : "ON",
-                           "timestamp" : "20190607T134601Z"
-                           }],
-"Passengers" : 
-                        [
-                          {"name":"test4",
-                           "isPresent":"true",
-                           "timestamp":"20190607T134601Z"
-                          },
-                          {"name":"front-seat passenger",
-                          "isPresent":"true",
-                          "timeStamp":"20190607T134601Z"
-                          }]
-
+  "sensors" : [ {
+    "name" : "Temperature",
+    "value" : "0",
+    "unit" : " Degree Celsius",
+    "state" : "0",
+    "timestamp" : "0"
+  }, {
+    "name" : "Humidity",
+    "value" : "0",
+    "unit" : "%",
+    "state" : "0",
+    "timestamp" : "0"
+  }, {
+    "name" : "Speed",
+    "value" : "0",
+    "unit" : "km/h",
+    "state" : "0",
+    "timestamp" : "0"
+  }, {
+    "name" : "LidarDistances",
+    "value" : "0",
+    "unit" : "mm",
+    "state" : "0",
+    "timestamp" : "0"
+  } ],
+  "passengers" : [ {
+    "name" : "Driver",
+    "isPresent" : "true",
+    "timeStamp" : "20190624T005155Z"
+  }, {
+    "name" : "front-seat passenger",
+    "isPresent" : "0",
+    "timeStamp" : "20190624T005155Z"
+  } ]
 }
