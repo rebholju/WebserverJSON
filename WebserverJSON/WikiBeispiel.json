@@ -27,10 +27,10 @@
   "passengers" : [ {
     "name" : "Driver",
     "isPresent" : "true",
-    "timeStamp" : "20190624T005155Z"
+    "timestamp" : "20190624T005155Z"
   }, {
     "name" : "front-seat passenger",
     "isPresent" : "0",
-    "timeStamp" : "20190624T005155Z"
+    "timestamp" : "20190624T005155Z"
   } ]
 }

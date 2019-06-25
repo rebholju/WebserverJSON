@@ -1,26 +1,26 @@
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+//import java.io.FileNotFoundException;
+//import java.io.FileReader;
+//import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.rmi.Naming;
+//import java.rmi.Naming;
 
 import java.sql.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+//import java.text.DateFormat;
+//import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 
-import javax.print.attribute.DateTimeSyntax;
+//import javax.print.attribute.DateTimeSyntax;
 
-import java.time.LocalDate;
+//import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import org.json.*;
+//import org.json.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+//import org.json.simple.parser.ParseException;
 
 
 	 class VehicleDbModel{	
@@ -113,27 +113,41 @@ import org.json.simple.parser.ParseException;
 		//Set VehicleData
 		public boolean setVehicleData(String JSONString, int vehicleNumber)
 		{
+			
+			
 			JSONParser jsonParser = new JSONParser();
 			try {
+				
 			JSONObject data = (JSONObject) jsonParser.parse(JSONString);
 		    
-		    JSONArray sensors = (JSONArray) data.get("Sensors");
-		    JSONArray passengersarray = (JSONArray) data.get("Passengers");
-		    
+		    JSONArray sensors = (JSONArray) data.get("sensors");
+		    JSONArray passengersarray = (JSONArray) data.get("passengers");
 		    JSONObject passengers = (JSONObject) passengersarray.get(0);
 		    // nur Driver
 		    
-		    
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss'Z'");
+			
+	        String	Date = "11111111T111111Z";
+			LocalDateTime parsedDate = LocalDateTime.parse(Date,formatter);
+			java.sql.Timestamp sqlTimestamp = java.sql.Timestamp.valueOf(parsedDate);
+			
+			
+			if(passengers.get("timestamp").toString().equals('0'))
+			{
 			LocalDateTime parsedDatePassenger = LocalDateTime.parse(passengers.get("timestamp").toString(),formatter);
-		//	java.sql.Timestamp sqlTimestampPassenger = java.sql.Timestamp.valueOf(parsedDatePassenger);
+			java.sql.Timestamp sqlTimestampPassenger = java.sql.Timestamp.valueOf(parsedDatePassenger);
+			}
+			System.out.println(passengers.get("timestamp").toString());
+			
 		    for(int i= 0;i<sensors.size();i++)
 		    {
 		        JSONObject singleSensor = (JSONObject) sensors.get(i);
 		        
-
-				LocalDateTime parsedDate = LocalDateTime.parse(singleSensor.get("timestamp").toString(),formatter);
-				java.sql.Timestamp sqlTimestamp = java.sql.Timestamp.valueOf(parsedDate);
+		        if(singleSensor.get("timestamp").toString().equals('0'))
+		        {   	
+				 parsedDate = LocalDateTime.parse(singleSensor.get("timestamp").toString(),formatter);
+				 sqlTimestamp = java.sql.Timestamp.valueOf(parsedDate);
+		        }
 
 			    try {
  
@@ -208,7 +222,7 @@ import org.json.simple.parser.ParseException;
 		    }
 		    
 		    	preparedStatement.close();
-		    	conn.close();
+		    	//conn.close();
 		    
 		    
 			}
@@ -270,7 +284,7 @@ import org.json.simple.parser.ParseException;
 		    {
 		    	resultSet.close();
 		    	preparedStatement.close();
-		    	conn.close();
+//		    	conn.close();
 		    }
             
             JSONObject AuthResponse = new JSONObject();
@@ -425,14 +439,14 @@ import org.json.simple.parser.ParseException;
 			{
 
 
-//				VehicleDbModel refVehicleDbModel = new VehicleDbModel();
-//				refVehicleDbModel.Main();
-				VehicleComController MQTTConV1 = new VehicleComController();
-				String[] topics = {"/SysArch/V1/Driver/AuthRequest/", "/SysArch/V1/Driver/LogoutRequest/", "/SysArch/V1/Sensors/", "/SysArch/V1/OS/"};
-				int[] qos = {0,0,0,0};
-				MQTTConV1.initializationMQTT(topics, true, "W4", "DEF", qos);
-				
-				while(true) {}
+				VehicleDbModel refVehicleDbModel = new VehicleDbModel();
+				refVehicleDbModel.Main();
+//				VehicleComController MQTTConV1 = new VehicleComController();
+//				String[] topics = {"/SysArch/V1/Driver/AuthRequest/", "/SysArch/V1/Driver/LogoutRequest/", "/SysArch/V1/Sensors/", "/SysArch/V1/OS/"};
+//				int[] qos = {0,0,0,0};
+//				MQTTConV1.initializationMQTT(topics, true, "W4", "DEF", qos);
+//				
+//				while(true) {}
 
 			}
 		}
