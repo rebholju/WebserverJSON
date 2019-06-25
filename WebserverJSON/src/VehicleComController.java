@@ -4,7 +4,7 @@
  */
 
 import java.io.InputStream;
-
+import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -29,6 +29,8 @@ public class VehicleComController
 	private MqttCallback callback;
 	private static boolean status;	
 	
+	
+	// TODO: Überarbeitung Konstuktoren und Initalisierung
 	public VehicleComController() {
 		this.status = false;
 	}
@@ -69,6 +71,7 @@ public class VehicleComController
 
 	}
 	
+	// TODO: Überarbeitung connect method
 	/**
      * Method to connect the Client to the Broker
      * This Method shall be used in the case when not using loop_forever
@@ -124,6 +127,7 @@ public class VehicleComController
 }
 	}
 	
+	// TODO: fix w4MqttClient.publish
 	/**
      * This Method publishes a specific msg on a specific topic.
      *
@@ -135,7 +139,7 @@ public class VehicleComController
             System.out.println("Invalid QoS: " + qos);
             return;
         }
-        if (status && w4MqttClient != null && w4MqttClient.isConnected()) {
+        else if (status && w4MqttClient != null && w4MqttClient.isConnected()) {
             MqttMessage message = new MqttMessage(msg.getBytes());
             message.setQos(qos);
             System.out.println("Publishing message: " + msg);
@@ -153,6 +157,8 @@ public class VehicleComController
         }
     }
     
+    
+    // TODO: Überarbeitung close connection to broker + unsubscribe method
     /**
      * This Method disconnects the Client from the Broker and throws an exception in case smth wrong happened.
      */

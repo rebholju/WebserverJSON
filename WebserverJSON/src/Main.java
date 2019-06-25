@@ -391,6 +391,8 @@ import org.json.simple.parser.ParseException;
 
 //				VehicleDbModel refVehicleDbModel = new VehicleDbModel();
 //				refVehicleDbModel.Main();
+				
+				// TODO: Aufruf MQTT-Com in Threads
 				VehicleComController MQTTConV1 = new VehicleComController();
 				String[] topics = {"/SysArch/V1/Driver/AuthRequest/", "/SysArch/V1/Driver/LogoutRequest/", "/SysArch/V1/Sensors/", "/SysArch/V1/OS/"};
 				int[] qos = {0,0,0,0};
