@@ -12,13 +12,14 @@ import org.eclipse.paho.client.mqttv3.logging.Logger;
 	public class VehicleCallback implements MqttCallback {
 
 		private static final Logger log = null;
+		
 	    @Override
 	    public void connectionLost(Throwable throwable) {
 	        System.out.println("Lost Connection to the server !..");
 	        System.out.println(throwable.getStackTrace());
 	        System.out.println("Cause: " + throwable.getCause());
 	        //Logger LOG = LoggerFactory.getLogger(String messageCatalogName, String loggerID);
-	        // TODO: Log Severe Error
+	        // TODO: Log Server Error
 	     // Verbindung neu aufbauen, Abschalten und Fehlerbehandlung ...
 	     //   log.error("Verbindung verloren:"+throwable.getCause().getLocalizedMessage());
 
