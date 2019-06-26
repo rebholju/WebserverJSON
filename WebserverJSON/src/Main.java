@@ -30,7 +30,7 @@ import org.json.simple.parser.JSONParser;
 	     private Statement statement = null;
 	     private PreparedStatement preparedStatement = null;
 	     private ResultSet resultSet = null;
-	     private int result=0;
+	     private int result=1;
 		 
 		 public VehicleDbModel()
 		 {
@@ -152,12 +152,13 @@ import org.json.simple.parser.JSONParser;
 
 			    try {
  
-				    this.preparedStatement = this.conn.prepareStatement("UPDATE vehiclecurrentdata SET value=?, driver=?, timestamp=? WHERE vehicleNumber = ? AND sensor = ?");
+				    this.preparedStatement = this.conn.prepareStatement("UPDATE vehiclecurrentdata SET value=?, driver=?, timestamp=?, unit=? WHERE vehicleNumber = ? AND sensor = ?");
 				    this.preparedStatement.setString(1,singleSensor.get("value").toString());
 				    this.preparedStatement.setString(2, passengers.get("name").toString());
 				    this.preparedStatement.setTimestamp(3, sqlTimestamp);
-				    this.preparedStatement.setInt(4, vehicleNumber);
-				    this.preparedStatement.setString(5, singleSensor.get("name").toString());		    
+				    this.preparedStatement.setString(4, singleSensor.get("unit").toString());
+				    this.preparedStatement.setInt(5, vehicleNumber);
+				    this.preparedStatement.setString(6, singleSensor.get("name").toString());		    
 		            result = this.preparedStatement.executeUpdate();
 		            //System.out.println("Wrote into vehiclecurrentdata");
   
@@ -177,12 +178,13 @@ import org.json.simple.parser.JSONParser;
 		    	try {
 				    	if( result==0 )
 				    	{			    		
-						    this.preparedStatement = this.conn.prepareStatement("INSERT INTO vehiclecurrentdata(vehicleNumber, sensor, value, timeStamp, driver) values(?, ?, ?, ?, ?)");
+						    this.preparedStatement = this.conn.prepareStatement("INSERT INTO vehiclecurrentdata(vehicleNumber, sensor, value, timeStamp, driver, unit) values(?, ?, ?, ?, ?)");
 						    this.preparedStatement.setInt(1, vehicleNumber);
 						    this.preparedStatement.setString(2, singleSensor.get("name").toString());
 						    this.preparedStatement.setString(3, singleSensor.get("value").toString());
 						    this.preparedStatement.setTimestamp(4, sqlTimestamp);
 						    this.preparedStatement.setString(5, passengers.get("name").toString());
+						    this.preparedStatement.setString(6, singleSensor.get("unit").toString());
 						    result = this.preparedStatement.executeUpdate();
 //						    System.out.println(resultSet);
 						    System.out.println("Wrote into vehiclecurrentdata");
@@ -201,12 +203,13 @@ import org.json.simple.parser.JSONParser;
 					    
 		    	try {
 		    		
-					    this.preparedStatement = this.conn.prepareStatement("INSERT INTO vehiclehistoricaldata(vehicleNumber, sensor, value, timeStamp, driver) values(?, ?, ?, ?, ?)");
+					    this.preparedStatement = this.conn.prepareStatement("INSERT INTO vehiclehistoricaldata(vehicleNumber, sensor, value, timeStamp, driver, unit) values(?, ?, ?, ?, ?)");
 					    this.preparedStatement.setInt(1, vehicleNumber);
 					    this.preparedStatement.setString(2, singleSensor.get("name").toString());
 					    this.preparedStatement.setString(3, singleSensor.get("value").toString());
 					    this.preparedStatement.setTimestamp(4, sqlTimestamp);
 					    this.preparedStatement.setString(5, passengers.get("name").toString());
+					    this.preparedStatement.setString(6, singleSensor.get("unit").toString());
 					    result = this.preparedStatement.executeUpdate();
 //					    System.out.println(resultSet);
 					    System.out.println("Wrote into vehiclehistoricaldata");
