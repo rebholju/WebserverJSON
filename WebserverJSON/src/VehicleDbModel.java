@@ -35,7 +35,15 @@ public class VehicleDbModel {
 			 try
 			 {
 			 Class.forName("com.mysql.jdbc.Driver");
-			 this.conn = DriverManager.getConnection("jdbc:mysql://localhost/SysArch","root", "");
+			 
+			 
+			 
+//		        $dsn = 'mysql:host=ea-pc165.ei.htwg-konstanz.de; port=3306; dbname=sysarch_w4';
+//		        // host=ea-pc165.ei.htwg-konstanz.de;
+//		        $dbuser = 'sysarch_w4';
+//		        $dbpwd = 'DEF';
+		     this.conn = DriverManager.getConnection("jdbc:mysql://ea-pc165.ei.htwg-konstanz.de/sysarch_w4:3306", "sysarch_w4", "DEF");
+//			 this.conn = DriverManager.getConnection("jdbc:mysql://localhost/SysArch","root", "");
 			 System.out.print("Database is connected !");
 
 			 }
