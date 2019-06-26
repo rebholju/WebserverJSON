@@ -51,28 +51,28 @@ class DatabaseThread extends Thread
 		        if (topic.equals("/SysArch/V1/Driver/AuthRequest/")) 
 		        {
 		        	System.out.println("Message:" + mqttMessage.toString());
-//		        	String authRequest = new String(mqttMessage.getPayload());
+		        	String authRequest = new String(mqttMessage.getPayload());
 		        	VehicleDbModel DriverAuth = new VehicleDbModel();
-//		        	String authResponse = DriverAuth.authentificateDriver(authRequest);
-//		        	VehicleComController.publish("/SysArch/V1/Driver/AuthResponse/", authResponse, 0);
+		        	String authResponse = DriverAuth.authentificateDriver(authRequest);
+		        	VehicleComController.publish("/SysArch/V1/Driver/AuthResponse/", authResponse, 0);
 		        }
 		        
 		        else if (topic.equals("/SysArch/V1/Driver/LogoutRequest/")) 
 		        {
 		        	System.out.println("Message:" + mqttMessage.toString());
-//		        	String logoutRequest = new String(mqttMessage.getPayload());
+		        	String logoutRequest = new String(mqttMessage.getPayload());
 		        	VehicleDbModel DriverLogout = new VehicleDbModel();
-//		        	Boolean status = DriverLogout.logoutRequest(logoutRequest);
+		        	Boolean status = DriverLogout.logoutRequest(logoutRequest);
 		        	
 		        }
 		        
 		        else if (topic.equals("/SysArch/V1/Sensors/")) 
 		        {
 		        	System.out.println("Message:" + mqttMessage.toString());
-//		        	String sensorData = new String(mqttMessage.getPayload());
+		        	String sensorData = new String(mqttMessage.getPayload());
 		        	VehicleDbModel SensorDataV1 = new VehicleDbModel();
-//		        	Boolean status = SensorDataV1.setVehicleData(sensorData, 1);
-//		        	System.out.println("Writing sensor values in DB is " + status); 
+		        	Boolean status = SensorDataV1.setVehicleData(sensorData, 1);
+		        	System.out.println("Writing sensor values in DB is " + status); 
 		        }
 		        else if (topic.equals("/SysArch/V1/OS/")) 
 		        {

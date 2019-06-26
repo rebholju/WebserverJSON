@@ -128,7 +128,7 @@ import org.json.simple.parser.JSONParser;
 		    
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss'Z'");
 			
-	        String	Date = "11111111T111111Z";
+	        String	Date = "00000000T000000Z";
 			LocalDateTime parsedDate = LocalDateTime.parse(Date,formatter);
 			java.sql.Timestamp sqlTimestamp = java.sql.Timestamp.valueOf(parsedDate);
 			
