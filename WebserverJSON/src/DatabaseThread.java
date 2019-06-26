@@ -2,7 +2,8 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
-
+// TODO: Kommentare einfügen
+//		 Konsolenausgabe definieren und programmieren + ewtl. Log in String und Datei 
 
 class DatabaseThread extends Thread
 	 {

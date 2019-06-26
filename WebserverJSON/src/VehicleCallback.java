@@ -8,6 +8,9 @@ import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.logging.Logger;
 
+// TODO: Kommentare einfügen
+//       Konsolenausgabe definieren und programmieren + ewtl. Log in String und Datei 
+
 
 	public class VehicleCallback implements MqttCallback {
 

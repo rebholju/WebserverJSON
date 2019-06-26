@@ -23,6 +23,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 //import org.json.simple.parser.ParseException;
 
+//TODO: Class MAIN in extra Java-File
+//		Kommentare einfügen
+//		Konsolenausgabe definieren und programmieren + ewtl. Log in String und Datei 
 
 	 class VehicleDbModel{	
 		
@@ -110,6 +113,9 @@ import org.json.simple.parser.JSONParser;
 			
 	           
 		}
+		
+		//TODO: IF-Abfrage state Sensor, wenn "OFF" dann Sensor nicht in DB schreiben + Feedback
+		//		Lidar-Sensordaten in DB schreiben
 		
 		//Set VehicleData
 		public boolean setVehicleData(String JSONString, int vehicleNumber)

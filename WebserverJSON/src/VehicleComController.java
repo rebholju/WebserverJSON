@@ -13,6 +13,8 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
+// TODO: Kommentare einfügen
+// 		 Konsolenausgabe definieren und programmieren + ewtl. Log in String und Datei 
 
 public class VehicleComController 
 	{
