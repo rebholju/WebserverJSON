@@ -233,7 +233,7 @@ public class VehicleDbModel {
 		    }
 		    
 		    	preparedStatement.close();
-		    	//conn.close();
+		    	conn.close();
 		    
 		    
 			}
@@ -250,6 +250,7 @@ public class VehicleDbModel {
 		//authentificate Driver
 		public String authentificateDriver(String JSONString)
 		{
+		  int id = 0;	
      	  String firstname = null;
      	  String lastname = null;
      	  String role = null;
@@ -268,6 +269,7 @@ public class VehicleDbModel {
 	            
 	            while (resultSet.next()) {
 	            	int i = 0;
+	            	  id = resultSet.getInt("rfidID");
 	            	  firstname = resultSet.getString("firstname");
 	            	  lastname = resultSet.getString("lastname");
 	            	  role = resultSet.getString("role");
@@ -295,11 +297,11 @@ public class VehicleDbModel {
 		    {
 		    	resultSet.close();
 		    	preparedStatement.close();
-//		    	conn.close();
+		    	conn.close();
 		    }
            
            JSONObject AuthResponse = new JSONObject();
-			if(firstname!=null && lastname!=null && role!=null)
+			if(rfidID != id && firstname!=null && lastname!=null && role!=null)
 			{
 			
 			
