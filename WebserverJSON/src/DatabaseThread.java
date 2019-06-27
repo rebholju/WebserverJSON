@@ -58,6 +58,15 @@ public class DatabaseThread extends Thread
 			executeDatabaseAccess();
 		}
 	}
+	
+	/**Method to clear first Object in List when Data is written into the Database. 
+	 * Called from outside (VehicleDbModel) to guarantee that the Data is written into the Database
+	 */
+	public void clearFirstObjectofList()
+	{
+		this.list.removeFirst();
+	}
+	
 
 	/**
 	 * Method to retrieve MQTT object from LinkedList and compare the topic. If the topic string
@@ -69,7 +78,8 @@ public class DatabaseThread extends Thread
 		try
 		{
 			// Get MQTT Object from LinkedList and extract the topic and the message
-			MQTTObject object = this.list.removeFirst();
+			//MQTTObject object = this.list.removeFirst();
+			MQTTObject object = this.list.getFirst();
 			String topic = object.getTopic();
 			MqttMessage mqttMessage = object.getMqttMessage();
 			System.out.println("Msg received on :" + topic + " :" + mqttMessage.toString());
