@@ -51,11 +51,14 @@ public class DatabaseThread extends Thread
 		        System.out.println("Msg received on :" + topic + " :" + mqttMessage.toString());
 		        if (topic.equals("/SysArch/V1/Driver/AuthRequest/")) 
 		        {
-		        	System.out.println("Message:" + mqttMessage.toString());
+		        	System.out.println("Response-Message:" + mqttMessage.toString());
 		        	String authRequest = new String(mqttMessage.getPayload());
 		        	VehicleDbModel DriverAuth = new VehicleDbModel();
 		        	String authResponse = DriverAuth.authentificateDriver(authRequest);
+		        	System.out.println("Response-Message:" + authResponse);
+		        	if(authResponse != null) {
 		        	VehicleComController.publish("/SysArch/V1/Driver/AuthResponse/", authResponse, 0);
+		        	}
 		        }
 		        
 		        else if (topic.equals("/SysArch/V1/Driver/LogoutRequest/")) 
@@ -83,6 +86,10 @@ public class DatabaseThread extends Thread
 		catch(NoSuchElementException ex)
 			 {
 				//System.out.println("Failure");
+			 }
+	    catch(NullPointerException ex)
+			 {
+				System.out.println("No Item in List to responde to vehicle");
 			 }
 		 }
 	 

@@ -42,7 +42,7 @@ public class VehicleDbModel {
 //		        // host=ea-pc165.ei.htwg-konstanz.de;
 //		        $dbuser = 'sysarch_w4';
 //		        $dbpwd = 'DEF';
-		     this.conn = DriverManager.getConnection("jdbc:mysql://ea-pc165.ei.htwg-konstanz.de:3306/sysarch_w4", "sysarch_w4", "DEF");
+		     this.conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/sysarch_w4", "sysarch_w4", "DEF");
 //			 this.conn = DriverManager.getConnection("jdbc:mysql://localhost/SysArch","root", "");
 			 System.out.print("Database is connected !");
 
