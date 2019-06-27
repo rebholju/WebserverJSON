@@ -128,6 +128,7 @@ public class DatabaseThread extends Thread
 		    else if (topic.equals("/SysArch/V1/OS/")) 
 		    {
 		    	System.out.println("Message:" + mqttMessage.toString()); 
+		    	clearFirstObjectofList();
 		    }
 		}
 		catch(NoSuchElementException ex)
