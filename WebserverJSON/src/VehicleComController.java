@@ -1,10 +1,5 @@
-/**
- * @author Andreas
- * Class to Communicate with MQTT broker and to send an receive data form the vehicles
- */
-
-import java.io.InputStream;
-import org.eclipse.paho.client.mqttv3.*;
+// TODO: Kommentare einfügen
+// 		 Konsolenausgabe definieren und programmieren + ewtl. Log in String und Datei 
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -13,8 +8,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-// TODO: Kommentare einfügen
-// 		 Konsolenausgabe definieren und programmieren + ewtl. Log in String und Datei 
+
 
 public class VehicleComController 
 	{
@@ -105,17 +99,6 @@ public class VehicleComController
         }
     }
 	
-/*	public void open(String ServerURI, String userName, char[] password) throws MqttException 
-	{
-		w4MqttClient=new MqttClient(ServerURI, MqttClient.generateClientId(), null);
-		options=new MqttConnectOptions();
-		options.setUserName(userName);
-		options.setPassword(password);
-		options.setCleanSession(true);
-		w4MqttClient.setCallback(callback);
-		w4MqttClient.connect(options);
-	}
-*/
     
 	public void subscribe(String[] topic, int[] qos) throws MqttException {
 		if (w4MqttClient != null && w4MqttClient.isConnected()) {
@@ -130,7 +113,6 @@ public class VehicleComController
 }
 	}
 	
-	// TODO: fix w4MqttClient.publish
 	/**
      * This Method publishes a specific msg on a specific topic.
      *
@@ -196,73 +178,6 @@ public class VehicleComController
             }
         }
 }
-/*	
-	public static InputStream startMQTT() throws MqttException {
-		TopicInputStream tis = new TopicInputStream();
-		MQTTConnection con = new MQTTConnection(tis);
-		con.open("tcp://ea-pc165:8883", "w4", "DEF".toCharArray());
-		con.subscribe("/SysArch/w4");
-		return tis;
-	        }
-	....
-			InputStream is;
-			try {
-				is = startMQTT();
-			} catch (MqttException e) {
-				e.printStackTrace();
-				return;
-			}
-			laser = new LaserScanner(new DataInputStream(is));
-	
-	
-	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
-	}
-	
-	import org.eclipse.paho.client.mqttv3.MqttClient;
-        import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-        import org.eclipse.paho.client.mqttv3.MqttException;
-        import org.eclipse.paho.client.mqttv3.MqttMessage;
-        import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
-
-        public class MqttPublishSample {
-
-        public static void main(String[] args) {
-
-            String topic        = "MQTT Examples";
-            String content      = "Message from MqttPublishSample";
-            int qos             = 2;
-            String broker       = "tcp://iot.eclipse.org:1883";
-            String clientId     = "JavaSample";
-            MemoryPersistence persistence = new MemoryPersistence();
-
-            try {
-                MqttClient sampleClient = new MqttClient(broker, clientId, persistence);
-                MqttConnectOptions connOpts = new MqttConnectOptions();
-                connOpts.setCleanSession(true);
-                System.out.println("Connecting to broker: "+broker);
-                sampleClient.connect(connOpts);
-                System.out.println("Connected");
-                System.out.println("Publishing message: "+content);
-                MqttMessage message = new MqttMessage(content.getBytes());
-                message.setQos(qos);
-                sampleClient.publish(topic, message);
-                System.out.println("Message published");
-                sampleClient.disconnect();
-                System.out.println("Disconnected");
-                System.exit(0);
-            } catch(MqttException me) {
-                System.out.println("reason "+me.getReasonCode());
-                System.out.println("msg "+me.getMessage());
-                System.out.println("loc "+me.getLocalizedMessage());
-                System.out.println("cause "+me.getCause());
-                System.out.println("excep "+me);
-                me.printStackTrace();
-            }
-        }
-    }
-	*/
 }
 

@@ -1,3 +1,6 @@
+//TODO: 
+//		Kommentare einfügen
+//		Konsolenausgabe definieren und programmieren + ewtl. Log in String und Datei 
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
@@ -7,17 +10,12 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-//TODO: 
-//		Kommentare einfügen
-//		Konsolenausgabe definieren und programmieren + ewtl. Log in String und Datei 
-
 /**
- * @author Andreas
+ * 
  *
  */
 public class VehicleDbModel {
