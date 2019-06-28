@@ -14,45 +14,42 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-/**
- * 
- *
+/** Class to write and read user data and vehicle values
+ *  into the database. In the class constructor is the connection
+ *  to the mysql database specified and by initialization created.
  */
 public class VehicleDbModel {
 
+		 // parameters for connection and communication with DB
 		 private Connection conn = null;
 	     private Statement statement = null;
 	     private PreparedStatement preparedStatement = null;
 	     private ResultSet resultSet = null;
 	     private int result=1;
 		 
+	     /** Constructor of the class VehicleDbModel. Here is the
+	      * DB driver loaded and the connection established.
+	      */
 		 public VehicleDbModel()
 		 {
-			 //https://www.vogella.com/tutorials/MySQLJava/article.html
+			 // https://www.vogella.com/tutorials/MySQLJava/article.html
 			 	 
 			 try
 			 {
 			 Class.forName("com.mysql.jdbc.Driver");
 			 
-			 
-			 
-//		        $dsn = 'mysql:host=ea-pc165.ei.htwg-konstanz.de; port=3306; dbname=sysarch_w4';
-//		        // host=ea-pc165.ei.htwg-konstanz.de;
-//		        $dbuser = 'sysarch_w4';
-//		        $dbpwd = 'DEF';
 		     this.conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/sysarch_w4", "sysarch_w4", "DEF");
-//			 this.conn = DriverManager.getConnection("jdbc:mysql://localhost/SysArch","root", "");
+		     // this.conn = DriverManager.getConnection("jdbc:mysql://localhost/SysArch","root", "");
 			 System.out.print("Database is connected !");
 
 			 }
 			 catch(Exception e)
 			 {
 			 System.out.print("Do not connect to DB - Error:"+e);
-			 }
-			 
+			 }		 
 		 }
 
-		 //Call Functions
+		// Test Function
 		public void Main()
 		{	
 			//JSON parser object to parse read file
@@ -116,14 +113,18 @@ public class VehicleDbModel {
 		//TODO: IF-Abfrage state Sensor, wenn "OFF" dann Sensor nicht in DB schreiben + Feedback
 		//		Lidar-Sensordaten in DB schreiben
 		
-		//Set VehicleData
+		/** Method to read the sensor values from the published String and
+		 * write the values at into the database.
+		 * @param JSONString String from MQTT object
+		 * @param vehicleNumber	Integer Number of the corresponding vehicle
+		 * @return status Boolean status writing in DB 
+		 */
 		public boolean setVehicleData(String JSONString, int vehicleNumber)
 		{
-			
-			
+			// Create new JSON parser to parse String values into JSON Object
 			JSONParser jsonParser = new JSONParser();
-			try {
-				
+			
+			try {	
 			JSONObject data = (JSONObject) jsonParser.parse(JSONString);
 		    
 		    JSONArray sensors = (JSONArray) data.get("sensors");
@@ -131,13 +132,13 @@ public class VehicleDbModel {
 		    JSONObject passengers = (JSONObject) passengersarray.get(0);
 		    // nur Driver
 		    
+		    // Create timestamp pattern
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss'Z'");
-			
 	        String	Date = "00000000T000000Z";
 			LocalDateTime parsedDate = LocalDateTime.parse(Date,formatter);
 			java.sql.Timestamp sqlTimestamp = java.sql.Timestamp.valueOf(parsedDate);
 			
-			
+			// if timestamp is zero, set dummy timestamp
 			if(passengers.get("timestamp").toString().equals('0'))
 			{
 			LocalDateTime parsedDatePassenger = LocalDateTime.parse(passengers.get("timestamp").toString(),formatter);
@@ -145,10 +146,12 @@ public class VehicleDbModel {
 			}
 			System.out.println(passengers.get("timestamp").toString());
 			
+			// 
 		    for(int i= 0;i<sensors.size();i++)
 		    {
 		        JSONObject singleSensor = (JSONObject) sensors.get(i);
 		        
+		        // if timestamp is zero, set dummy timestamp
 		        if(singleSensor.get("timestamp").toString().equals('0'))
 		        {   	
 				 parsedDate = LocalDateTime.parse(singleSensor.get("timestamp").toString(),formatter);
@@ -234,7 +237,7 @@ public class VehicleDbModel {
 			    }	
 		      
 		    }
-		    
+		    	// close precompiled statement and connection to DB
 		    	preparedStatement.close();
 		    	conn.close();
 		    
@@ -250,7 +253,11 @@ public class VehicleDbModel {
 		    return true;
 		}
 
-		//authentificate Driver
+		/** Method to read the RFID and timestamp from the published String and
+		 * check with DB if the values matches a corresponding user.
+		 * @param JSONString String from MQTT object
+		 * @return authResponse String with id, userdata and timestamp in JSON design 
+		 */
 		public String authentificateDriver(String JSONString)
 		{
 		  int id = 0;	
@@ -305,7 +312,7 @@ public class VehicleDbModel {
 		    	conn.close();
 		    }
            
-           JSONObject AuthResponse = new JSONObject();
+            JSONObject AuthResponse = new JSONObject();
 			if(rfidID != id && firstname!=null && lastname!=null && role!=null)
 			{
 			
@@ -337,7 +344,11 @@ public class VehicleDbModel {
 	
 		}
 
-		//delete User from actualSensorData
+		/** Method to read the RFID an timestamp from the published String and
+		 * delete driver from actualSensorData in database.
+		 * @param JSONString String from MQTT object
+		 * @return status Boolean status writing in DB 
+		 */
 		public boolean logoutRequest(String JSONString)
 		{
 			
@@ -415,6 +426,11 @@ public class VehicleDbModel {
 		}
 
 		// Get StringArray of existing Vehiclenumbers
+		/** Method to read the existing vehicles from the database and
+		 *  deliver them as return value in a Stringarray back.
+		 * delete driver from actualSensorData in database.
+		 * @return vehicles Stringarray of existing vehicles in DB 
+		 */
 		public String[] getavailabileVehicles()
 		{
 //			String[] vehicles = new String[10];

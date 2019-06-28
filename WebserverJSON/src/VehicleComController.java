@@ -9,7 +9,9 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 
-
+/** This class handles the connection, subscription
+ *  publishing and disconnection to the MQTT broker.
+ */
 public class VehicleComController 
 	{
 
@@ -30,7 +32,13 @@ public class VehicleComController
 	public VehicleComController() {
 		this.status = false;
 	}
-	
+	/**
+     * Constructor to create VehicleComController and set broker 
+     * connection parameters.
+     * @param ServerURI Servername as String
+     * @param port Serverport as String
+     * @param clientId individual clientid as String 
+     */
 	public VehicleComController(String ServerURI, String port, String clientId) 
 	{
 	    this.ServerURI = ServerURI;
@@ -40,6 +48,16 @@ public class VehicleComController
 	    this.status = false;
 	}
 	
+	/**
+     * Method initializes the Client for the connection to the Broker.
+     * The options will be configured, a connection established and to the
+     * corresponding topics subscribed.
+     * @param topics Stringarray of the topics
+     * @param cleanSession Boolean value to determine session cleaning
+     * @param userName client connection name as String 
+     * @param password client connection password as String
+     * @param qos Quality of Service as Integerarray
+     */
 	public void initializationMQTT(String[] topics, boolean cleanSession, String userName, String password, int[] qos) 
 	{
         try {
@@ -99,7 +117,12 @@ public class VehicleComController
         }
     }
 	
-    
+    /**
+     * Method to subscribe to the specified topics on the Broker.
+     * @param topic Stringarray of topics
+     * @param qos Integerarray of Quality of Service
+     * @throws MqttException Exception if could not subscribe or connect
+     */
 	public void subscribe(String[] topic, int[] qos) throws MqttException {
 		if (w4MqttClient != null && w4MqttClient.isConnected()) {
             try {
@@ -118,6 +141,7 @@ public class VehicleComController
      *
      * @param topic The topic where the msg should be published
      * @param msg   The content that should be published
+     * @param qos   The Quality of Service
      */
     public synchronized static void publish(String topic, String msg, int qos) {
         if (qos < 0 || qos > 2) {
@@ -159,6 +183,9 @@ public class VehicleComController
         }
     }
 
+    /**
+     * This Method hard disconnects the Client from the Broker and throws an exception in case smth wrong happened.
+     */
     public static void close() {
         if (status) {
             disconnect();
