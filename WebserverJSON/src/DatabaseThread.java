@@ -1,5 +1,4 @@
-// TODO: Kommentare einfügen
-//		 Konsolenausgabe definieren und programmieren + ewtl. Log in String und Datei
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
@@ -14,14 +13,16 @@ public class DatabaseThread extends Thread
 	// Create DatabaseThread instance and LinkedList for MQTT Objects
 	private static DatabaseThread instance;
 	public LinkedList<MQTTObject> list;
+	private static VehicleComController MQTTController;
 	
 	/**
 	 * Constructs a new DatabaseThread and creates a LinkedList
 	 * for the MQTT Objects.
 	 */
-	private DatabaseThread()
+	public DatabaseThread(VehicleComController ComController)
 	{
 		list = new LinkedList<MQTTObject>();
+		MQTTController = ComController;
 	}
 	
 	/**
@@ -33,7 +34,7 @@ public class DatabaseThread extends Thread
 	{
 		if(instance == null)
 	    {
-		instance = new DatabaseThread();
+		instance = new DatabaseThread(MQTTController);
 		}
 		return instance;
 	}
@@ -82,23 +83,29 @@ public class DatabaseThread extends Thread
 			MQTTObject object = this.list.getFirst();
 			String topic = object.getTopic();
 			MqttMessage mqttMessage = object.getMqttMessage();
-			System.out.println("Msg received on :" + topic + " :" + mqttMessage.toString());
+			System.out.println("topic:" + topic);
+			System.out.println("message: " + mqttMessage.toString());
 			
 		    // Check if the topic is: "/V1/Driver/AuthResponse/"
 		    if (topic.equals("/SysArch/V1/Driver/AuthRequest/")) 
 		    {
 		    	// Convert message into String an give it as parameter to authenticateDriver
 		    	// method from VehicleDbModel class
-		    	System.out.println("Response-Message:" + mqttMessage.toString());
 		        String authRequest = new String(mqttMessage.getPayload());
 		        VehicleDbModel DriverAuth = new VehicleDbModel();
 		        String authResponse = DriverAuth.authentificateDriver(authRequest);
-		        System.out.println("Response-Message:" + authResponse);
+		        System.out.println("Authentification response message: " + authResponse);
 		        // If the response String is ok, publish it on the topic
 		        if(authResponse != null) 
 		        {
-		        	VehicleComController.publish("/SysArch/V1/Driver/AuthResponse/", authResponse, 0);
+		        	try {
+						MQTTController.publish("/SysArch/V1/Driver/AuthResponse/", authResponse, 0);
+					} catch (MqttException e) {
+						 System.out.println("Couldn't publish on the topic!");
+						e.printStackTrace();
+					}
 		        }
+		        System.out.println("Publishing message to topic was ok.");
 		    }
 		        
 		    // Check if the topic is: "/V1/Driver/LogoutRequest/"
@@ -106,10 +113,15 @@ public class DatabaseThread extends Thread
 		    {
 		    	// Convert message into String an give it as parameter to logoutRequest
 		    	// method from VehicleDbModel class. Return boolean value true or false as status.
-		    	System.out.println("Message:" + mqttMessage.toString());
 		        String logoutRequest = new String(mqttMessage.getPayload());
 		        VehicleDbModel DriverLogout = new VehicleDbModel();
-		        Boolean status = DriverLogout.logoutRequest(logoutRequest);    	
+		        Boolean status = DriverLogout.logoutRequest(logoutRequest);
+		        if (status == true) {
+		        	 System.out.println("Logout driver was successfull.");
+		        }
+		        else {
+		        	System.out.println("Logout driver failed!");
+		        }
 		    }
 		        
 		    // Check if the topic is: "/SysArch/V1/Sensors/"
@@ -117,18 +129,22 @@ public class DatabaseThread extends Thread
 		    {
 		    	// Convert message into String an give it as parameter to setVehicleData
 		    	// method from VehicleDbModel class. Return boolean value true or false as status.
-		    	System.out.println("Message:" + mqttMessage.toString());
 		        String sensorData = new String(mqttMessage.getPayload());
 		        VehicleDbModel SensorDataV1 = new VehicleDbModel();
 		        Boolean status = SensorDataV1.setVehicleData(sensorData, 1);
-		        System.out.println("Writing sensor values in DB is " + status); 
+		        if (status == true) {
+		        	System.out.println("Writing sensor values in DB was successfull.");
+		        }
+		        else {
+		        	System.out.println("Writing sensor values in DB failed!");
+		        }
 		    }
 		    
 		    // Check if the topic is: "/SysArch/V1/OS/"
 		    else if (topic.equals("/SysArch/V1/OS/")) 
 		    {
-		    	System.out.println("Message:" + mqttMessage.toString()); 
 		    	clearFirstObjectofList();
+		    	System.out.println("Currently there will be no OS data written in DB!");
 		    }
 		}
 		catch(NoSuchElementException ex)
@@ -137,7 +153,7 @@ public class DatabaseThread extends Thread
 		}
 	    catch(NullPointerException ex)
 		{
-			System.out.println("No Item in List to responde to vehicle");
+			System.out.println("No Item in List to responde to vehicle!");
 		}
 	}
 	 

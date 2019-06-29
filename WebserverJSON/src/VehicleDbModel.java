@@ -1,13 +1,9 @@
-//TODO: 
-//		Kommentare einfügen
-//		Konsolenausgabe definieren und programmieren + ewtl. Log in String und Datei 
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import org.json.simple.JSONArray;
@@ -22,7 +18,6 @@ public class VehicleDbModel {
 
 		 // parameters for connection and communication with DB
 		 private Connection conn = null;
-	     private Statement statement = null;
 	     private PreparedStatement preparedStatement = null;
 	     private ResultSet resultSet = null;
 	     private int result=1;
@@ -37,15 +32,15 @@ public class VehicleDbModel {
 			 try
 			 {
 			 Class.forName("com.mysql.jdbc.Driver");
-			 
+			 System.out.print("Trying to connect to Database ...");
 		     this.conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/sysarch_w4", "sysarch_w4", "DEF");
 		     // this.conn = DriverManager.getConnection("jdbc:mysql://localhost/SysArch","root", "");
-			 System.out.print("Database is connected !");
+			 System.out.print("Database is connected!");
 
 			 }
 			 catch(Exception e)
 			 {
-			 System.out.print("Do not connect to DB - Error:"+e);
+			 System.out.print("No connection to Database could be established - Error: "+e);
 			 }		 
 		 }
 
@@ -175,7 +170,7 @@ public class VehicleDbModel {
 				    }
 				    catch(Exception ex)
 				    {
-				    	System.out.println("SensorWert noch nicht vorhanden oder Datenbank nicht verbunden"+ex);
+				    	System.out.println("Error: Sensor value not existing or database is not connected! "+ ex);
 				    	return false;
 				    }
 				    finally
@@ -197,12 +192,12 @@ public class VehicleDbModel {
 							    this.preparedStatement.setString(6, singleSensor.get("unit").toString());
 							    result = this.preparedStatement.executeUpdate();
 	//						    System.out.println(resultSet);
-							    System.out.println("Wrote into vehiclecurrentdata");
+							    System.out.println("Writing into the table vehiclecurrentdata was successfull.");
 					    	}
 			    		}
 				    	catch(Exception exception)
 				    	{
-				    		System.out.println("Fehler 2te "+exception);
+				    		System.out.println("Error second "+exception);
 				    		return false;
 				    	}
 					    finally
@@ -222,7 +217,7 @@ public class VehicleDbModel {
 						    this.preparedStatement.setString(6, singleSensor.get("unit").toString());
 						    result = this.preparedStatement.executeUpdate();
 	//					    System.out.println(resultSet);
-						    System.out.println("Wrote into vehiclehistoricaldata");
+						    System.out.println("Writing into the table vehiclehistoricaldata was successfull.");
 						    
 						    DatabaseThread refDatabaseThread = DatabaseThread.getinstance();
 						    refDatabaseThread.clearFirstObjectofList();
@@ -230,7 +225,7 @@ public class VehicleDbModel {
 		    		}
 			    	catch(Exception exception)
 			    	{
-			    		System.out.println("Fehler 2te "+exception);
+			    		System.out.println("Error second "+exception);
 			    		return false;
 			    	}
 
@@ -245,7 +240,7 @@ public class VehicleDbModel {
 			}
 			catch(Exception ex)
 			{
-				System.out.println("Fehler beim Parsen" + ex);
+				System.out.println("Error while parsing data! " + ex);
 				return false;
 			}
 
@@ -293,7 +288,7 @@ public class VehicleDbModel {
 	            	  }
 	            	  if(i<0)
 	            	  {
-	            		  System.out.println("RFID mehrmals vergeben");
+	            		  System.out.println("Error: RFID exist multiple times!");
 	            	  }
 	            	  i++;
 	            	}
@@ -303,7 +298,7 @@ public class VehicleDbModel {
            }
            catch(Exception ex)
            {
-           	System.out.println("Fehler mit Datenbank");
+           	System.out.println("Error with database!");
            }
 		    finally
 		    {
@@ -374,7 +369,7 @@ public class VehicleDbModel {
 	    	            	  username = resultSet.getString("username");
 	    	            	  if(i<0)
 	    	            	  {
-	    	            		  System.out.println("RFID mehrmals vergeben");
+	    	            		  System.out.println("Error: RFID exist multiple times!");
 	    	            	  }
 	    	            	  i++;
 	    	            	}
@@ -382,7 +377,7 @@ public class VehicleDbModel {
 	                }
 	                catch(Exception ex)
 	                {
-	                	System.out.println("Fehler mit Datenbank");
+	                	System.out.println("Error with database!");
 	                }
 	            	
 	            	
@@ -393,7 +388,7 @@ public class VehicleDbModel {
 		            
 		            if(this.result != 0)
 		            {
-		            	System.out.println("driver deselected");
+		            	System.out.println("The driver is deselected from the vehicle.");
 		            	
 	    	            
 					    DatabaseThread refDatabaseThread = DatabaseThread.getinstance();
@@ -409,13 +404,13 @@ public class VehicleDbModel {
 	            }
 	            catch(Exception ex)
 	            {
-	            	System.out.println("Fehler mit Datenbank");
+	            	System.out.println("Error with database!");
 	            	return false;
 	            }
 	            
 	      	}
 	      	catch (Exception err){
-	      	     System.out.println("Error"+ err);
+	      	     System.out.println("Error "+ err);
 	      	   return false;
 	      	}
 			
@@ -461,7 +456,7 @@ public class VehicleDbModel {
            }
 			catch(Exception ex)
 			{
-				System.out.println("Fehler mit Datenbank"+ex);
+				System.out.println("Failure getting number of vehicles from database - Error "+ex);
 			}
            
 			return vehicles;

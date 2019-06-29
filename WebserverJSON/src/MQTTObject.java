@@ -1,6 +1,3 @@
-//TODO: 
-//		Kommentare einfügen
-//		Konsolenausgabe definieren und programmieren + ewtl. Log in String und Datei
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 /**

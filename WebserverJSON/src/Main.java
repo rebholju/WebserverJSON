@@ -1,6 +1,8 @@
-//TODO: 
-//		Kommentare einfügen
-//		Konsolenausgabe definieren und programmieren + ewtl. Log in String und Datei 
+/**
+ * @author Julian Rebholz
+ * @author Peter Schmidt
+ * @author Andreas Roth
+ */
 
 /**
  * The MAIN Class contains the initialization of
@@ -22,13 +24,14 @@ public class Main {
 		VehicleComController MQTTConV1 = new VehicleComController();
 		String[] topics = {"/SysArch/V1/Driver/AuthRequest/", "/SysArch/V1/Driver/LogoutRequest/", "/SysArch/V1/Sensors/", "/SysArch/V1/OS/"};
 		int[] qos = {0,0,0,0};
-		MQTTConV1.initializationMQTT(topics, true, "W4", "DEF", qos);
+		System.out.println("\tWebservice W4");
+		MQTTConV1.initializationMQTT(topics, qos);
 				
-		// Create DB Thread and get Instance
-		// TODO: Classe umschreiben um ComController Referenz zu übergeben
-		DatabaseThread thread = DatabaseThread.getinstance();
+		// Create DB Thread and give ref to VehicleComController
+		DatabaseThread thread = new DatabaseThread(MQTTConV1);
 				
 		// Run Thread
+		System.out.println("Start Database Thread ...");
 		thread.start();
 				
 		// Loop forever

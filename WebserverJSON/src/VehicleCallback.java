@@ -1,11 +1,6 @@
-// TODO: Kommentare einfügen
-//       Konsolenausgabe definieren und programmieren + ewtl. Log in String und Datei 
-import org.eclipse.paho.client.mqttv3.IMqttAsyncClient;
-import org.eclipse.paho.client.mqttv3.IMqttClient;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.eclipse.paho.client.mqttv3.logging.Logger;
 
 /**
  * Implementation of the MqttClalback class to enable the MQTT
@@ -13,8 +8,6 @@ import org.eclipse.paho.client.mqttv3.logging.Logger;
  * an event when a message is publish on the initialized topics. 
  */
 	public class VehicleCallback implements MqttCallback {
-
-		private static final Logger log = null;
 		
 		/**
 		 * Overrides the connectionLost method from MqttCallback. 
@@ -28,18 +21,14 @@ import org.eclipse.paho.client.mqttv3.logging.Logger;
 		 */
 	    @Override
 	    public void connectionLost(Throwable cause) {
-	        System.out.println("Lost Connection to the server !..");
-	        System.out.println(cause.getStackTrace());
+	        System.out.println("Callback connectionLost: The Connection to the broker was disconnected suddenly!");
 	        System.out.println("Cause: " + cause.getCause());
-	        //Logger LOG = LoggerFactory.getLogger(String messageCatalogName, String loggerID);
-	        // TODO: Log Server Error
-	     // Verbindung neu aufbauen, Abschalten und Fehlerbehandlung ...
-	     //   log.error("Verbindung verloren:"+throwable.getCause().getLocalizedMessage());
+	        System.out.println("Message: " + cause.getLocalizedMessage());
+
 
 
 	    }
 
-	    // TODO: Log message arrived
 	    /**
 	     * Overrides the messageArrived method from MqttCallback.
 		 * This method is called when a message arrives on a topic. Messages are
@@ -52,13 +41,13 @@ import org.eclipse.paho.client.mqttv3.logging.Logger;
 		 */
 	    @Override
 	    public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
-	    	
+	    	System.out.println("Message on subscribed topic arrived.");
 	    	// Initialize new MQTTObject Object and give as parameter
 	    	// the topic and the MQTT message 
-	    	// Initialize new DB Thread and add MQTT object to Linkedlist
+	    	// Initialize new DB Thread and add MQTT object to LinkedList
 	    	MQTTObject object = new MQTTObject(topic, mqttMessage);
 	    	DatabaseThread thread = DatabaseThread.getinstance();
-	    	 thread.addtoList(object);
+	    	thread.addtoList(object);
 	    }
 
 	    /**
@@ -74,8 +63,11 @@ import org.eclipse.paho.client.mqttv3.logging.Logger;
 		 */
 	    @Override
 	    public void deliveryComplete(IMqttDeliveryToken MqttDeliveryToken) {
-	    	// TODO: Log AKN message
+	    	System.out.println("Message on published topic was deliverd succesfull to broker.");
+	    	System.out.println("Message ID: " + MqttDeliveryToken.getMessageId());
+	    	System.out.println("Is complete: " + MqttDeliveryToken.isComplete());
 	    }
+
 	    
 }
 

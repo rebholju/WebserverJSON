@@ -1,7 +1,4 @@
-// TODO: Kommentare einfügen
-// 		 Konsolenausgabe definieren und programmieren + ewtl. Log in String und Datei 
 import org.eclipse.paho.client.mqttv3.IMqttToken;
-import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -22,30 +19,17 @@ public class VehicleComController
     private String userName = "W4"; 
     private String password = "DEF";
     private MemoryPersistence persistence;
-	private static MqttClient w4MqttClient;
+	private MqttClient w4MqttClient;
 	private MqttConnectOptions options;
-	private MqttCallback callback;
-	private static boolean status;	
+	private boolean status;	
 	
 	
-	// TODO: Überarbeitung Konstuktoren und Initalisierung
-	public VehicleComController() {
-		this.status = false;
-	}
 	/**
      * Constructor to create VehicleComController and set broker 
-     * connection parameters.
-     * @param ServerURI Servername as String
-     * @param port Serverport as String
-     * @param clientId individual clientid as String 
+     * connection status parameter.
      */
-	public VehicleComController(String ServerURI, String port, String clientId) 
-	{
-	    this.ServerURI = ServerURI;
-	    this.port = port;
-	    this.clientId = clientId;
-	    this.broker = ServerURI + ":" + port;
-	    this.status = false;
+	public VehicleComController() {
+		status = false;
 	}
 	
 	/**
@@ -53,67 +37,77 @@ public class VehicleComController
      * The options will be configured, a connection established and to the
      * corresponding topics subscribed.
      * @param topics Stringarray of the topics
-     * @param cleanSession Boolean value to determine session cleaning
-     * @param userName client connection name as String 
-     * @param password client connection password as String
      * @param qos Quality of Service as Integerarray
      */
-	public void initializationMQTT(String[] topics, boolean cleanSession, String userName, String password, int[] qos) 
+	public void initializationMQTT(String[] topics, int[] qos) 
 	{
         try {
+        	System.out.println("Initialization MQTT ...");
             persistence = new MemoryPersistence();
             options = new MqttConnectOptions();
-            options.setCleanSession(cleanSession);
+            options.setCleanSession(true);
             options.setAutomaticReconnect(true);
-            options.setUserName(userName);
-            options.setPassword(password.toCharArray());
-            //options.setWill("/SysArch/V1/Driver/AuthResponse/", "Client got disconnected suddently".getBytes(), 0, true);
+            options.setUserName(this.userName);
+            options.setPassword(this.password.toCharArray());
             w4MqttClient = new MqttClient(broker, clientId, persistence);
             w4MqttClient.setCallback(new VehicleCallback());
             w4MqttClient.setTimeToWait(1000);
-            if (connect()) {
-            	// connect to broker
-            	w4MqttClient.connect(options);
-                // subscribe to topics
-                //w4MqttClient.subscribe(topics, qos);
+            // connect to broker
+            connect();
+            if(status == true) {
+            	// subscribe to topics
             	subscribe(topics, qos);
-            } else {
-                System.out.println("Client couldn't connect to the Server");
             }
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
-
+            else if(status != true) {
+            	System.out.println("Ongoing trying to connect max 10 times!");
+            	for (int i = 0; i<=10; i++) {
+            		connect();
+            		if(status == true) {
+            			// subscribe to topics
+            			subscribe(topics, qos);
+            			break;
+            			}
+            	}
+            }
+            else {
+            	System.out.println("No connection could be established!");
+            	System.out.println("Please check you're internet connection or the broker configuration.");
+            }
+        	} 
+        	catch (MqttException e) {
+        		e.printStackTrace();
+        	}
 	}
 	
-	// TODO: Überarbeitung connect method
 	/**
      * Method to connect the Client to the Broker
      * This Method shall be used in the case when not using loop_forever
      *
      * @return true if connection was established, false if not.
+     * @throws MqttException Exception if could not connect
      */
-    public boolean connect() 
+    public void connect() throws MqttException
     {
         try {
             if (w4MqttClient != null) {
-                System.out.println("Trying to connect..");
+                System.out.println("Connecting to broker ...");
+                w4MqttClient.connect(options);
                 status = true;
-                return true;
-            } else if (!status){
-            	System.out.println("Trying to connect..");
+            } 
+            else if (!status) {
+            	System.out.println("Connecting to broker ...");
                 IMqttToken iMqttToken = w4MqttClient.connectWithResult(options);
                 iMqttToken.waitForCompletion();
-                boolean connectResponse = iMqttToken.getSessionPresent();
-                System.out.println("Connection status: " + connectResponse);
-                status = connectResponse;
-                return connectResponse;
+                boolean connectionResponse = iMqttToken.getSessionPresent();
+                System.out.println("Connection status: " + connectionResponse);
+                status = connectionResponse;
             }
-            return false;
-        } catch (MqttException e) {
+            System.out.println("MQTT-Client couldn't connect to the broker!");
+            status =  false;
+        } 
+        catch (MqttException e) {
             e.printStackTrace();
             status = false;
-            return false;
         }
     }
 	
@@ -121,19 +115,23 @@ public class VehicleComController
      * Method to subscribe to the specified topics on the Broker.
      * @param topic Stringarray of topics
      * @param qos Integerarray of Quality of Service
-     * @throws MqttException Exception if could not subscribe or connect
+     * @throws MqttException Exception if could not subscribe
      */
 	public void subscribe(String[] topic, int[] qos) throws MqttException {
 		if (w4MqttClient != null && w4MqttClient.isConnected()) {
             try {
                 w4MqttClient.subscribe(topic, qos);
-                System.out.println(" Subscribed to " + topic);
+                System.out.println(" Subscribed to topics:");
+                System.out.print("\t" + topic[0] + "\n\t" + topic[1] + "\n\t" + topic[2] + "\n\t" + topic[3]);
+                System.out.println("With Quality of Service: " + qos[0]);
             } catch (MqttException e) {
                 e.printStackTrace();
                 disconnect();
-                close();
             }
-}
+		}
+		else {
+			System.out.println("Couldn't subscribe to topics!");
+		}
 	}
 	
 	/**
@@ -142,69 +140,56 @@ public class VehicleComController
      * @param topic The topic where the msg should be published
      * @param msg   The content that should be published
      * @param qos   The Quality of Service
+     * @throws MqttException Exception if could not publish
      */
-    public synchronized static void publish(String topic, String msg, int qos) {
+    public synchronized void publish(String topic, String mqttmsg, int qos) throws MqttException{
         if (qos < 0 || qos > 2) {
-            System.out.println("Invalid QoS: " + qos);
-            return;
+            System.out.println("Invalid Quality of Service: " + qos);
         }
         else if (status && w4MqttClient != null && w4MqttClient.isConnected()) {
-            MqttMessage message = new MqttMessage(msg.getBytes());
+            MqttMessage message = new MqttMessage(mqttmsg.getBytes());
             message.setQos(qos);
-            System.out.println("Publishing message: " + msg);
+            System.out.println("Publishing to broker ...");
+            System.out.println("Publishing topic: " + topic);
+            System.out.println("Publishing message: " + mqttmsg);
+            System.out.println("Publishing Quality of Service: " + qos);
             try {
-                 System.out.println(" connected ");
                  w4MqttClient.publish(topic, message);
-                 System.out.println(" Bis hier? ");
             } catch (MqttException e) {
                 e.printStackTrace();
                 disconnect();
-                close();
             }
         } else {
-            System.out.println("Connection is lost or client is null");
+            System.out.println("Couldn't publish on the topic!");
         }
     }
     
-    
-    // TODO: Überarbeitung close connection to broker + unsubscribe method
     /**
-     * This Method disconnects the Client from the Broker and throws an exception in case smth wrong happened.
+     * This Method disconnects the Client from the Broker and closes the connection.
+     * @throws MqttException Exception if could not disconnect
      */
-    private static void disconnect() {
+    private void disconnect() throws MqttException {
         try {
-            System.out.println("Disconnecting..");
+            System.out.println("Disconnecting from Broker ...");
             w4MqttClient.disconnect();
             status = false;
 
         } catch (MqttException e) {
-            System.out.println("Exception when trying to disconnect the client");
+            System.out.println("Exception when trying to disconnect from broker!");
             e.printStackTrace();
         }
-    }
-
-    /**
-     * This Method hard disconnects the Client from the Broker and throws an exception in case smth wrong happened.
-     */
-    public static void close() {
-        if (status) {
-            disconnect();
-            try {
-                System.out.println("Closing Client..");
-                w4MqttClient.close();
-            } catch (MqttException e) {
-                System.out.println("Exception when trying to close the client");
-                e.printStackTrace();
-            }
-        } else {
-            try {
-                w4MqttClient.close();
-            } catch (MqttException e) {
-                System.out.println("Exception when trying to close the client");
-                e.printStackTrace();
-            }
+        if(status == false) {
+        	try {
+        		System.out.println("Closing the Client ...");
+        		w4MqttClient.close();
+        		System.out.println("Client sucessfull disconnected from broker.");
+        	} 	
+        	catch (MqttException e) {
+            System.out.println("Exception when trying to close the client!");
+            e.printStackTrace();
+        	}
         }
-}
+    }
 
 }
 
