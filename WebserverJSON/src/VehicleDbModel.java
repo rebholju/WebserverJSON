@@ -105,8 +105,7 @@ public class VehicleDbModel {
 	           
 		}
 		
-		//TODO: IF-Abfrage state Sensor, wenn "OFF" dann Sensor nicht in DB schreiben + Feedback
-		//		Lidar-Sensordaten in DB schreiben
+		//	TODO: Lidar-Sensordaten in DB schreiben
 		
 		/** Method to read the sensor values from the published String and
 		 * write the values at into the database.
@@ -229,7 +228,11 @@ public class VehicleDbModel {
 			    		return false;
 			    	}
 
-			    }	
+			    }
+		    	else if(singleSensor.get("state").toString().contentEquals("OFF")) {
+		    		System.out.println("Sensor" + singleSensor.get("name") + " is off!");
+		    		
+		    	}
 		      
 		    }
 		    	// close precompiled statement and connection to DB

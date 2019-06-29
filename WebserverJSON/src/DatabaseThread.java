@@ -98,12 +98,7 @@ public class DatabaseThread extends Thread
 		        // If the response String is ok, publish it on the topic
 		        if(authResponse != null) 
 		        {
-		        	try {
-						MQTTController.publish("/SysArch/V1/Driver/AuthResponse/", authResponse, 0);
-					} catch (MqttException e) {
-						 System.out.println("Couldn't publish on the topic!");
-						e.printStackTrace();
-					}
+		        	MQTTController.publish("/SysArch/V1/Driver/AuthResponse/", authResponse, 0);
 		        }
 		        System.out.println("Publishing message to topic was ok.");
 		    }

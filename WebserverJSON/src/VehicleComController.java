@@ -61,6 +61,11 @@ public class VehicleComController
             else if(status != true) {
             	System.out.println("Ongoing trying to connect max 10 times!");
             	for (int i = 0; i<=10; i++) {
+            		try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
             		connect();
             		if(status == true) {
             			// subscribe to topics
@@ -68,8 +73,6 @@ public class VehicleComController
             			break;
             			}
             	}
-            }
-            else {
             	System.out.println("No connection could be established!");
             	System.out.println("Please check you're internet connection or the broker configuration.");
             }
@@ -84,9 +87,8 @@ public class VehicleComController
      * This Method shall be used in the case when not using loop_forever
      *
      * @return true if connection was established, false if not.
-     * @throws MqttException Exception if could not connect
      */
-    public void connect() throws MqttException
+    public void connect()
     {
         try {
             if (w4MqttClient != null) {
@@ -115,9 +117,8 @@ public class VehicleComController
      * Method to subscribe to the specified topics on the Broker.
      * @param topic Stringarray of topics
      * @param qos Integerarray of Quality of Service
-     * @throws MqttException Exception if could not subscribe
      */
-	public void subscribe(String[] topic, int[] qos) throws MqttException {
+	public void subscribe(String[] topic, int[] qos) {
 		if (w4MqttClient != null && w4MqttClient.isConnected()) {
             try {
                 w4MqttClient.subscribe(topic, qos);
@@ -142,7 +143,7 @@ public class VehicleComController
      * @param qos   The Quality of Service
      * @throws MqttException Exception if could not publish
      */
-    public synchronized void publish(String topic, String mqttmsg, int qos) throws MqttException{
+    public synchronized void publish(String topic, String mqttmsg, int qos) {
         if (qos < 0 || qos > 2) {
             System.out.println("Invalid Quality of Service: " + qos);
         }
@@ -168,7 +169,7 @@ public class VehicleComController
      * This Method disconnects the Client from the Broker and closes the connection.
      * @throws MqttException Exception if could not disconnect
      */
-    private void disconnect() throws MqttException {
+    private void disconnect() {
         try {
             System.out.println("Disconnecting from Broker ...");
             w4MqttClient.disconnect();
