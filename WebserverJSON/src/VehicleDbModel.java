@@ -44,7 +44,9 @@ public class VehicleDbModel {
 			 }		 
 		 }
 
-		// Test Function
+		/** Method to test the VehicleDbModel functions 
+		 * by reading a defined json file  
+		*/
 		public void Main()
 		{	
 			//JSON parser object to parse read file
@@ -169,7 +171,7 @@ public class VehicleDbModel {
 				    }
 				    catch(Exception ex)
 				    {
-				    	System.out.println("Error: Sensor value not existing or database is not connected! "+ ex);
+				    	System.out.println("Sensor value not existing or database is not connected! "+ ex);
 				    	return false;
 				    }
 				    finally
@@ -190,13 +192,12 @@ public class VehicleDbModel {
 							    this.preparedStatement.setString(5, passengers.get("name").toString());
 							    this.preparedStatement.setString(6, singleSensor.get("unit").toString());
 							    result = this.preparedStatement.executeUpdate();
-	//						    System.out.println(resultSet);
 							    System.out.println("Writing into the table vehiclecurrentdata was successfull.");
 					    	}
 			    		}
 				    	catch(Exception exception)
 				    	{
-				    		System.out.println("Error second "+exception);
+				    		System.out.println("Sensor value not existing or database is not connected! "+exception);
 				    		return false;
 				    	}
 					    finally
@@ -224,7 +225,7 @@ public class VehicleDbModel {
 		    		}
 			    	catch(Exception exception)
 			    	{
-			    		System.out.println("Error second "+exception);
+			    		System.out.println("Sensor value not existing or database is not connected! "+exception);
 			    		return false;
 			    	}
 
@@ -301,7 +302,7 @@ public class VehicleDbModel {
            }
            catch(Exception ex)
            {
-           	System.out.println("Error with database!");
+           	System.out.println("Sensor value not existing or database is not connected! "+ex);
            }
 		    finally
 		    {
@@ -335,7 +336,7 @@ public class VehicleDbModel {
            
      	}
      	catch (Exception err){
-     	     System.out.println("Error "+ err);
+     	     System.out.println("Error while parsing data! " + err);
      	     return null;
      	}
      	
@@ -380,7 +381,7 @@ public class VehicleDbModel {
 	                }
 	                catch(Exception ex)
 	                {
-	                	System.out.println("Error with database!");
+	                	System.out.println("User does not exist or database is not connected! "+ex);
 	                }
 	            	
 	            	
@@ -407,13 +408,13 @@ public class VehicleDbModel {
 	            }
 	            catch(Exception ex)
 	            {
-	            	System.out.println("Error with database!");
+	            	System.out.println("User does not exist or database is not connected! "+ex);
 	            	return false;
 	            }
 	            
 	      	}
 	      	catch (Exception err){
-	      	     System.out.println("Error "+ err);
+	      	     System.out.println("Error while parsing data!  "+ err);
 	      	   return false;
 	      	}
 			
@@ -459,7 +460,7 @@ public class VehicleDbModel {
            }
 			catch(Exception ex)
 			{
-				System.out.println("Failure getting number of vehicles from database - Error "+ex);
+				System.out.println("Failure getting number of vehicles from database "+ex);
 			}
            
 			return vehicles;
