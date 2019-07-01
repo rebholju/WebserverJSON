@@ -246,6 +246,8 @@ public class VehicleDbModel {
 			catch(Exception ex)
 			{
 				System.out.println("Error while parsing data! " + ex);
+			    DatabaseThread refDatabaseThread = DatabaseThread.getinstance();
+			    refDatabaseThread.clearFirstObjectofList();
 				return false;
 			}
 
@@ -338,6 +340,8 @@ public class VehicleDbModel {
      	}
      	catch (Exception err){
      	     System.out.println("Error while parsing data! " + err);
+			    DatabaseThread refDatabaseThread = DatabaseThread.getinstance();
+			    refDatabaseThread.clearFirstObjectofList();
      	     return null;
      	}
      	
@@ -416,6 +420,8 @@ public class VehicleDbModel {
 	      	}
 	      	catch (Exception err){
 	      	     System.out.println("Error while parsing data!  "+ err);
+				    DatabaseThread refDatabaseThread = DatabaseThread.getinstance();
+				    refDatabaseThread.clearFirstObjectofList();
 	      	   return false;
 	      	}
 			
