@@ -1,5 +1,6 @@
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
@@ -13,16 +14,14 @@ public class DatabaseThread extends Thread
 	// Create DatabaseThread instance and LinkedList for MQTT Objects
 	private static DatabaseThread instance;
 	public LinkedList<MQTTObject> list;
-	private static VehicleComController MQTTController;
 	
 	/**
 	 * Constructs a new DatabaseThread and creates a LinkedList
 	 * for the MQTT Objects.
 	 */
-	public DatabaseThread(VehicleComController ComController)
+	public DatabaseThread()
 	{
 		list = new LinkedList<MQTTObject>();
-		MQTTController = ComController;
 	}
 	
 	/**
@@ -34,7 +33,7 @@ public class DatabaseThread extends Thread
 	{
 		if(instance == null)
 	    {
-		instance = new DatabaseThread(MQTTController);
+		instance = new DatabaseThread();
 		}
 		return instance;
 	}
@@ -83,7 +82,7 @@ public class DatabaseThread extends Thread
 			MQTTObject object = this.list.getFirst();
 			String topic = object.getTopic();
 			MqttMessage mqttMessage = object.getMqttMessage();
-			System.out.println("topic:" + topic);
+			System.out.println("topic: " + topic);
 			System.out.println("message: " + mqttMessage.toString());
 			
 		    // Check if the topic is: "/V1/Driver/AuthResponse/"
@@ -98,7 +97,7 @@ public class DatabaseThread extends Thread
 		        // If the response String is ok, publish it on the topic
 		        if(authResponse != null) 
 		        {
-		        	MQTTController.publish("/SysArch/V1/Driver/AuthResponse/", authResponse, 0);
+		        	VehicleComController.publish("/SysArch/V1/Driver/AuthResponse/", authResponse, 0);
 		        }
 		        System.out.println("Publishing message to topic was ok.");
 		    }

@@ -19,9 +19,9 @@ public class VehicleComController
     private String userName = "W4"; 
     private String password = "DEF";
     private MemoryPersistence persistence;
-	private MqttClient w4MqttClient;
+	private static MqttClient w4MqttClient;
 	private MqttConnectOptions options;
-	private boolean status;	
+	private static boolean status;	
 	
 	
 	/**
@@ -58,7 +58,7 @@ public class VehicleComController
             	// subscribe to topics
             	subscribe(topics, qos);
             }
-            else if(status != true) {
+            else if(status != false) {
             	System.out.println("Ongoing trying to connect max 10 times!");
             	for (int i = 0; i<=10; i++) {
             		try {
@@ -104,8 +104,10 @@ public class VehicleComController
                 System.out.println("Connection status: " + connectionResponse);
                 status = connectionResponse;
             }
+            else {
             System.out.println("MQTT-Client couldn't connect to the broker!");
             status =  false;
+            }
         } 
         catch (MqttException e) {
             e.printStackTrace();
@@ -122,9 +124,9 @@ public class VehicleComController
 		if (w4MqttClient != null && w4MqttClient.isConnected()) {
             try {
                 w4MqttClient.subscribe(topic, qos);
-                System.out.println(" Subscribed to topics:");
-                System.out.print("\t" + topic[0] + "\n\t" + topic[1] + "\n\t" + topic[2] + "\n\t" + topic[3]);
-                System.out.println("With Quality of Service: " + qos[0]);
+                System.out.println("Subscribe to topics:");
+                System.out.println("\t" + topic[0] + "\n\t" + topic[1] + "\n\t" + topic[2] + "\n\t" + topic[3]);
+                System.out.println("Quality of Service: " + qos[0]);
             } catch (MqttException e) {
                 e.printStackTrace();
                 disconnect();
@@ -143,7 +145,7 @@ public class VehicleComController
      * @param qos   The Quality of Service
      * @throws MqttException Exception if could not publish
      */
-    public synchronized void publish(String topic, String mqttmsg, int qos) {
+    public static synchronized void publish(String topic, String mqttmsg, int qos) {
         if (qos < 0 || qos > 2) {
             System.out.println("Invalid Quality of Service: " + qos);
         }
@@ -169,7 +171,7 @@ public class VehicleComController
      * This Method disconnects the Client from the Broker and closes the connection.
      * @throws MqttException Exception if could not disconnect
      */
-    private void disconnect() {
+    private static void disconnect() {
         try {
             System.out.println("Disconnecting from Broker ...");
             w4MqttClient.disconnect();

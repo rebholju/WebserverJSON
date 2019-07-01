@@ -24,14 +24,15 @@ public class Main {
 		VehicleComController MQTTConV1 = new VehicleComController();
 		String[] topics = {"/SysArch/V1/Driver/AuthRequest/", "/SysArch/V1/Driver/LogoutRequest/", "/SysArch/V1/Sensors/", "/SysArch/V1/OS/"};
 		int[] qos = {0,0,0,0};
-		System.out.println("\tWebservice W4");
+		System.out.println("\t\t\tWebservice W4");
 		MQTTConV1.initializationMQTT(topics, qos);
 				
 		// Create DB Thread and give ref to VehicleComController
-		DatabaseThread thread = new DatabaseThread(MQTTConV1);
+		DatabaseThread thread = DatabaseThread.getinstance();
 				
 		// Run Thread
 		System.out.println("Start Database Thread ...");
+		System.out.println();
 		thread.start();
 				
 		// Loop forever

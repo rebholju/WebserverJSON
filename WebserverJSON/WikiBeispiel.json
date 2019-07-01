@@ -3,7 +3,7 @@
     "name" : "Temperature",
     "value" : "0",
     "unit" : " Degree Celsius",
-    "state" : "0",
+    "state" : "ON",
     "timestamp" : "0"
   }, {
     "name" : "Humidity",

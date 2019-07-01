@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -32,15 +33,15 @@ public class VehicleDbModel {
 			 try
 			 {
 			 Class.forName("com.mysql.jdbc.Driver");
-			 System.out.print("Trying to connect to Database ...");
+			 System.out.println("Trying to connect to Database ...");
 		     this.conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/sysarch_w4", "sysarch_w4", "DEF");
 		     // this.conn = DriverManager.getConnection("jdbc:mysql://localhost/SysArch","root", "");
-			 System.out.print("Database is connected!");
+			 System.out.println("Database is connected!");
 
 			 }
 			 catch(Exception e)
 			 {
-			 System.out.print("No connection to Database could be established - Error: "+e);
+			 System.out.println("No connection to Database could be established - Error: "+e);
 			 }		 
 		 }
 
@@ -130,7 +131,7 @@ public class VehicleDbModel {
 		    
 		    // Create timestamp pattern
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss'Z'");
-	        String	Date = "00000000T000000Z";
+	        String	Date = "11111111T111111Z";
 			LocalDateTime parsedDate = LocalDateTime.parse(Date,formatter);
 			java.sql.Timestamp sqlTimestamp = java.sql.Timestamp.valueOf(parsedDate);
 			
@@ -171,7 +172,7 @@ public class VehicleDbModel {
 				    }
 				    catch(Exception ex)
 				    {
-				    	System.out.println("Sensor value not existing or database is not connected! "+ ex);
+				    	System.out.println("Sensor value not existing or database is not connected! 1"+ ex);
 				    	return false;
 				    }
 				    finally
@@ -184,7 +185,7 @@ public class VehicleDbModel {
 			    	try {
 					    	if( result==0 )
 					    	{			    		
-							    this.preparedStatement = this.conn.prepareStatement("INSERT INTO vehiclecurrentdata(vehicleNumber, sensor, value, timeStamp, driver, unit) values(?, ?, ?, ?, ?)");
+							    this.preparedStatement = this.conn.prepareStatement("INSERT INTO vehiclecurrentdata(vehicleNumber, sensor, value, timeStamp, driver, unit) values(?, ?, ?, ?, ?, ?)");
 							    this.preparedStatement.setInt(1, vehicleNumber);
 							    this.preparedStatement.setString(2, singleSensor.get("name").toString());
 							    this.preparedStatement.setString(3, singleSensor.get("value").toString());
@@ -197,7 +198,7 @@ public class VehicleDbModel {
 			    		}
 				    	catch(Exception exception)
 				    	{
-				    		System.out.println("Sensor value not existing or database is not connected! "+exception);
+				    		System.out.println("Sensor value not existing or database is not connected! 2"+exception);
 				    		return false;
 				    	}
 					    finally
@@ -208,7 +209,7 @@ public class VehicleDbModel {
 						    
 			    	try {
 			    		
-						    this.preparedStatement = this.conn.prepareStatement("INSERT INTO vehiclehistoricaldata(vehicleNumber, sensor, value, timeStamp, driver, unit) values(?, ?, ?, ?, ?)");
+						    this.preparedStatement = this.conn.prepareStatement("INSERT INTO vehiclehistoricaldata(vehicleNumber, sensor, value, timeStamp, driver, unit) values(?, ?, ?, ?, ?, ?)");
 						    this.preparedStatement.setInt(1, vehicleNumber);
 						    this.preparedStatement.setString(2, singleSensor.get("name").toString());
 						    this.preparedStatement.setString(3, singleSensor.get("value").toString());
@@ -225,7 +226,7 @@ public class VehicleDbModel {
 		    		}
 			    	catch(Exception exception)
 			    	{
-			    		System.out.println("Sensor value not existing or database is not connected! "+exception);
+			    		System.out.println("Sensor value not existing or database is not connected! 3 "+exception);
 			    		return false;
 			    	}
 

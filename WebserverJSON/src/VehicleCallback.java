@@ -41,13 +41,19 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 		 */
 	    @Override
 	    public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
-	    	System.out.println("Message on subscribed topic arrived.");
+	    	System.out.println("Message on subscribed topic \"" + topic + "\" arrived.");
 	    	// Initialize new MQTTObject Object and give as parameter
 	    	// the topic and the MQTT message 
 	    	// Initialize new DB Thread and add MQTT object to LinkedList
+	    	if(mqttMessage.isRetained() == false) {
 	    	MQTTObject object = new MQTTObject(topic, mqttMessage);
 	    	DatabaseThread thread = DatabaseThread.getinstance();
 	    	thread.addtoList(object);
+	    	}
+	    	else {
+	    		mqttMessage.clearPayload();
+	    		System.out.println("Retained message arrived and was deleted.");
+	    	}
 	    }
 
 	    /**
