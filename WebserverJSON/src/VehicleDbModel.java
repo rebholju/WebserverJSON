@@ -118,6 +118,8 @@ public class VehicleDbModel {
 		{
 			// Create new JSON parser to parse String values into JSON Object
 			JSONParser jsonParser = new JSONParser();
+			String username = null;
+			
 			
 			try {	
 			JSONObject data = (JSONObject) jsonParser.parse(JSONString);
@@ -141,6 +143,31 @@ public class VehicleDbModel {
 			}
 			//System.out.println(passengers.get("timestamp").toString());
 			
+			
+            this.preparedStatement = this.conn.prepareStatement("SELECT username FROM users WHERE vehicle=?");
+            this.preparedStatement.setInt(1,1);
+            this.resultSet = this.preparedStatement.executeQuery();
+
+            if(this.resultSet != null)
+            {
+            	while (resultSet.next()) {
+	            	int i = 0;
+	            	  username = resultSet.getString("username");
+	            	  if(i<0)
+	            	  {
+	            		  System.out.println("Error: RFID exist multiple times!");
+	            	  }
+	            	  i++;
+            	}
+            }
+            if(username == null)
+            {
+            	username = "no Driver authentificated";
+            }
+            
+            
+            
+			
 			// 
 		    for(int i= 0;i<sensors.size();i++)
 		    {
@@ -163,9 +190,10 @@ public class VehicleDbModel {
 					    this.preparedStatement.setString(1,singleSensor.get("value").toString());
 					    this.preparedStatement.setString(2, singleSensor.get("unit").toString());
 					    this.preparedStatement.setTimestamp(3, sqlTimestamp);
-					    this.preparedStatement.setString(4, passengers.get("name").toString());
+//					    this.preparedStatement.setString(4, passengers.get("name").toString());
+					    this.preparedStatement.setString(4, username);
 					    this.preparedStatement.setInt(5, vehicleNumber);
-					    this.preparedStatement.setString(6, singleSensor.get("name").toString());		    
+					    this.preparedStatement.setString(6, singleSensor.get("name").toString());	
 			            result = this.preparedStatement.executeUpdate();
 			            System.out.println("Updating " + singleSensor.get("name") + " in table vehiclecurrentdata was successfull.");
 	 
@@ -190,8 +218,9 @@ public class VehicleDbModel {
 							    this.preparedStatement.setString(2, singleSensor.get("name").toString());
 							    this.preparedStatement.setString(3, singleSensor.get("value").toString());
 							    this.preparedStatement.setString(4, singleSensor.get("unit").toString());
-							    this.preparedStatement.setTimestamp(4, sqlTimestamp);
-							    this.preparedStatement.setString(6, passengers.get("name").toString());
+							    this.preparedStatement.setTimestamp(5, sqlTimestamp);
+//							    this.preparedStatement.setString(6, passengers.get("name").toString());
+							    this.preparedStatement.setString(6, username);
 							    result = this.preparedStatement.executeUpdate();
 							    System.out.println("Writing into the table vehiclecurrentdata was successfull.");
 					    	}
@@ -215,7 +244,8 @@ public class VehicleDbModel {
 						    this.preparedStatement.setString(3, singleSensor.get("value").toString());
 						    this.preparedStatement.setString(4, singleSensor.get("unit").toString());
 						    this.preparedStatement.setTimestamp(5, sqlTimestamp);
-						    this.preparedStatement.setString(6, passengers.get("name").toString());   
+//						    this.preparedStatement.setString(6, passengers.get("name").toString());   
+						    this.preparedStatement.setString(6, username);
 						    result = this.preparedStatement.executeUpdate();
 	//					    System.out.println(resultSet);
 						    System.out.println("Writing values form " + singleSensor.get("name") + " into the table vehiclehistoricaldata was successfull.");
@@ -263,7 +293,7 @@ public class VehicleDbModel {
 		 */
 		public String authentificateDriver(String JSONString)
 		{
-		  int id = 0;	
+		  String id =  null;	
      	  String firstname = null;
      	  String lastname = null;
      	  String role = null;
@@ -272,17 +302,17 @@ public class VehicleDbModel {
      	  
      	try {
      		JSONObject data = (JSONObject) jsonParser.parse(JSONString);
-			int rfidID = Integer.parseInt(data.get("id").toString());
+			// rfidID = Integer.parseInt(data.get("id").toString());
 			
            try {
            	
 	            this.preparedStatement = this.conn.prepareStatement("SELECT firstname, lastname, role, rfidID FROM users WHERE rfidID=?");
-	            this.preparedStatement.setInt(1,rfidID);
+	            this.preparedStatement.setString(1, data.get("id").toString());;
 	            this.resultSet = this.preparedStatement.executeQuery();
 	            
 	            while (resultSet.next()) {
 	            	int i = 0;
-	            	  id = resultSet.getInt("rfidID");
+	            	  id = resultSet.getString("rfidID");
 	            	  firstname = resultSet.getString("firstname");
 	            	  lastname = resultSet.getString("lastname");
 	            	  role = resultSet.getString("role");
@@ -300,6 +330,20 @@ public class VehicleDbModel {
 	            	  }
 	            	  i++;
 	            	}
+	            try
+	            {
+	            this.preparedStatement = this.conn.prepareStatement("UPDATE users SET vehicle=? WHERE rfidID=?");
+	            this.preparedStatement.setInt(1,1);
+	            this.preparedStatement.setString(2, id);
+	            this.preparedStatement.executeUpdate();
+	            }
+	            catch(Exception ex)
+	            {
+	            	System.out.println("RFID does not exist in DB! "+ex);
+				    DatabaseThread refDatabaseThread = DatabaseThread.getinstance();
+				    refDatabaseThread.clearFirstObjectofList();
+	            }
+	            
 			    DatabaseThread refDatabaseThread = DatabaseThread.getinstance();
 			    refDatabaseThread.clearFirstObjectofList();
 	            
@@ -314,13 +358,13 @@ public class VehicleDbModel {
 		    	preparedStatement.close();
 		    	conn.close();
 		    }
-           
             JSONObject AuthResponse = new JSONObject();
-			if(rfidID == id && firstname!=null && lastname!=null && role!=null)
+            
+			if(id!=null && firstname!=null && lastname!=null && role!=null)
 			{
+				
 			
-			
-			AuthResponse.put( "id" , Integer.toString(rfidID));                    
+			AuthResponse.put( "id" , id);                    
 			AuthResponse.put( "firstName"  , firstname);           
 			AuthResponse.put("lastName"  , lastname);   
 			AuthResponse.put( "authLevel"  , role);
@@ -330,7 +374,7 @@ public class VehicleDbModel {
 			}
 			else
 			{		
-				AuthResponse.put( "id" , Integer.toString(rfidID));                    
+				AuthResponse.put( "id" , data.get("id").toString());                    
 				AuthResponse.put( "firstName"  , "");           
 				AuthResponse.put("lastName"  , "");   
 				AuthResponse.put( "authLevel"  , "");
@@ -364,14 +408,14 @@ public class VehicleDbModel {
 		  	  
 	      	try {
 	      		JSONObject data = (JSONObject) jsonParser.parse(JSONString);
-				int rfidID = Integer.parseInt(data.get("id").toString());
+//				int rfidID = Integer.parseInt(data.get("id").toString());
 				
 	            try {
 	            	
 	                try {
 	                	
 	    	            this.preparedStatement = this.conn.prepareStatement("select username from users where rfidID=?");
-	    	            this.preparedStatement.setInt(1,rfidID);
+	    	            this.preparedStatement.setString(1,data.get("id").toString());
 	    	            this.resultSet = this.preparedStatement.executeQuery();
 	    	            
 	    	            while (resultSet.next()) {
@@ -384,13 +428,22 @@ public class VehicleDbModel {
 	    	            	  i++;
 	    	            	}
 	    	            
+
 	                }
 	                catch(Exception ex)
 	                {
-	                	System.out.println("User does not exist or database is not connected! "+ex);
+	                	System.out.println("User does not exist or database is not connected 1! "+ex);
 	                }
 	            	
 	            	
+    	            this.preparedStatement = this.conn.prepareStatement("UPDATE users Set vehicle=? where rfidID=?");
+    	            this.preparedStatement.setInt(1,0);
+    	            this.preparedStatement.setString(2,data.get("id").toString());
+    	            this.preparedStatement.executeUpdate();
+    	            
+    	            
+    	            this.preparedStatement.close();
+    	            
 		            this.preparedStatement = this.conn.prepareStatement("UPDATE vehiclecurrentdata SET driver=? WHERE driver=?");
 		            this.preparedStatement.setString(1,"No Driver authentificated");
 		            this.preparedStatement.setString(2,username);
@@ -420,7 +473,7 @@ public class VehicleDbModel {
 	            {
 	            	DatabaseThread refDatabaseThread = DatabaseThread.getinstance();
 				    refDatabaseThread.clearFirstObjectofList();
-	            	System.out.println("User does not exist or database is not connected! "+ex);
+	            	System.out.println("User does not exist or database is not connected 2! "+ex);
 	            	return false;
 	            }
 	            
