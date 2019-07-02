@@ -108,8 +108,6 @@ public class VehicleDbModel {
 	           
 		}
 		
-		//	TODO: Lidar-Sensordaten in DB schreiben
-		
 		/** Method to read the sensor values from the published String and
 		 * write the values at into the database.
 		 * @param JSONString String from MQTT object
@@ -136,43 +134,45 @@ public class VehicleDbModel {
 			java.sql.Timestamp sqlTimestamp = java.sql.Timestamp.valueOf(parsedDate);
 			
 			// if timestamp is zero, set dummy timestamp
-			if(passengers.get("timestamp").toString().equals('0'))
+			if(!passengers.get("timestamp").toString().contentEquals("0"))
 			{
 			LocalDateTime parsedDatePassenger = LocalDateTime.parse(passengers.get("timestamp").toString(),formatter);
 			java.sql.Timestamp sqlTimestampPassenger = java.sql.Timestamp.valueOf(parsedDatePassenger);
 			}
-			System.out.println(passengers.get("timestamp").toString());
+			//System.out.println(passengers.get("timestamp").toString());
 			
 			// 
 		    for(int i= 0;i<sensors.size();i++)
 		    {
 		        JSONObject singleSensor = (JSONObject) sensors.get(i);
 		        
-		        // if timestamp is zero, set dummy timestamp
-		        if(singleSensor.get("timestamp").toString().equals('0'))
-		        {   	
-				 parsedDate = LocalDateTime.parse(singleSensor.get("timestamp").toString(),formatter);
-				 sqlTimestamp = java.sql.Timestamp.valueOf(parsedDate);
-		        }
+		        
 		    	
 		    	if(singleSensor.get("state").toString().contentEquals("ON"))
 		    	{
+		    		// if timestamp is zero, set dummy timestamp
+			        if(!singleSensor.get("timestamp").toString().contentEquals("0"))
+			        {   	
+					 parsedDate = LocalDateTime.parse(singleSensor.get("timestamp").toString(),formatter);
+					 sqlTimestamp = java.sql.Timestamp.valueOf(parsedDate);
+			        }
+			        
 			    try {
 
-					    this.preparedStatement = this.conn.prepareStatement("UPDATE vehiclecurrentdata SET value=?, driver=?, timestamp=?, unit=? WHERE vehicleNumber = ? AND sensor = ?");
+					    this.preparedStatement = this.conn.prepareStatement("UPDATE vehiclecurrentdata SET value=?, unit=?, timeStamp=?, driver=? WHERE vehicleNumber = ? AND sensor = ?");
 					    this.preparedStatement.setString(1,singleSensor.get("value").toString());
-					    this.preparedStatement.setString(2, passengers.get("name").toString());
+					    this.preparedStatement.setString(2, singleSensor.get("unit").toString());
 					    this.preparedStatement.setTimestamp(3, sqlTimestamp);
-					    this.preparedStatement.setString(4, singleSensor.get("unit").toString());
+					    this.preparedStatement.setString(4, passengers.get("name").toString());
 					    this.preparedStatement.setInt(5, vehicleNumber);
 					    this.preparedStatement.setString(6, singleSensor.get("name").toString());		    
 			            result = this.preparedStatement.executeUpdate();
-			            //System.out.println("Wrote into vehiclecurrentdata");
+			            System.out.println("Updating " + singleSensor.get("name") + " in table vehiclecurrentdata was successfull.");
 	 
 				    }
 				    catch(Exception ex)
 				    {
-				    	System.out.println("Sensor value not existing or database is not connected! 1"+ ex);
+				    	System.out.println("Sensor value not existing or database is not connected! 1 "+ ex);
 				    	return false;
 				    }
 				    finally
@@ -185,20 +185,20 @@ public class VehicleDbModel {
 			    	try {
 					    	if( result==0 )
 					    	{			    		
-							    this.preparedStatement = this.conn.prepareStatement("INSERT INTO vehiclecurrentdata(vehicleNumber, sensor, value, timeStamp, driver, unit) values(?, ?, ?, ?, ?, ?)");
+							    this.preparedStatement = this.conn.prepareStatement("INSERT INTO vehiclecurrentdata(vehicleNumber, sensor, value, unit, timeStamp, driver) values(?, ?, ?, ?, ?, ?)");
 							    this.preparedStatement.setInt(1, vehicleNumber);
 							    this.preparedStatement.setString(2, singleSensor.get("name").toString());
 							    this.preparedStatement.setString(3, singleSensor.get("value").toString());
+							    this.preparedStatement.setString(4, singleSensor.get("unit").toString());
 							    this.preparedStatement.setTimestamp(4, sqlTimestamp);
-							    this.preparedStatement.setString(5, passengers.get("name").toString());
-							    this.preparedStatement.setString(6, singleSensor.get("unit").toString());
+							    this.preparedStatement.setString(6, passengers.get("name").toString());
 							    result = this.preparedStatement.executeUpdate();
 							    System.out.println("Writing into the table vehiclecurrentdata was successfull.");
 					    	}
 			    		}
 				    	catch(Exception exception)
 				    	{
-				    		System.out.println("Sensor value not existing or database is not connected! 2"+exception);
+				    		System.out.println("Sensor value not existing or database is not connected! 2 "+exception);
 				    		return false;
 				    	}
 					    finally
@@ -209,19 +209,18 @@ public class VehicleDbModel {
 						    
 			    	try {
 			    		
-						    this.preparedStatement = this.conn.prepareStatement("INSERT INTO vehiclehistoricaldata(vehicleNumber, sensor, value, timeStamp, driver, unit) values(?, ?, ?, ?, ?, ?)");
+						    this.preparedStatement = this.conn.prepareStatement("INSERT INTO vehiclehistoricaldata(vehicleNumber, sensor, value, unit, timeStamp, driver) values(?, ?, ?, ?, ?, ?)");
 						    this.preparedStatement.setInt(1, vehicleNumber);
 						    this.preparedStatement.setString(2, singleSensor.get("name").toString());
 						    this.preparedStatement.setString(3, singleSensor.get("value").toString());
-						    this.preparedStatement.setTimestamp(4, sqlTimestamp);
-						    this.preparedStatement.setString(5, passengers.get("name").toString());
-						    this.preparedStatement.setString(6, singleSensor.get("unit").toString());
+						    this.preparedStatement.setString(4, singleSensor.get("unit").toString());
+						    this.preparedStatement.setTimestamp(5, sqlTimestamp);
+						    this.preparedStatement.setString(6, passengers.get("name").toString());   
 						    result = this.preparedStatement.executeUpdate();
 	//					    System.out.println(resultSet);
-						    System.out.println("Writing into the table vehiclehistoricaldata was successfull.");
+						    System.out.println("Writing values form " + singleSensor.get("name") + " into the table vehiclehistoricaldata was successfull.");
 						    
-						    DatabaseThread refDatabaseThread = DatabaseThread.getinstance();
-						    refDatabaseThread.clearFirstObjectofList();
+						    
 				    	
 		    		}
 			    	catch(Exception exception)
@@ -241,6 +240,8 @@ public class VehicleDbModel {
 		    	preparedStatement.close();
 		    	conn.close();
 		    
+		    	DatabaseThread refDatabaseThread = DatabaseThread.getinstance();
+			    refDatabaseThread.clearFirstObjectofList();
 		    
 			}
 			catch(Exception ex)
@@ -275,7 +276,7 @@ public class VehicleDbModel {
 			
            try {
            	
-	            this.preparedStatement = this.conn.prepareStatement("select firstname, lastname, role from users where rfidID=?");
+	            this.preparedStatement = this.conn.prepareStatement("SELECT firstname, lastname, role, rfidID FROM users WHERE rfidID=?");
 	            this.preparedStatement.setInt(1,rfidID);
 	            this.resultSet = this.preparedStatement.executeQuery();
 	            
@@ -315,11 +316,11 @@ public class VehicleDbModel {
 		    }
            
             JSONObject AuthResponse = new JSONObject();
-			if(rfidID != id && firstname!=null && lastname!=null && role!=null)
+			if(rfidID == id && firstname!=null && lastname!=null && role!=null)
 			{
 			
 			
-			AuthResponse.put( "id" , rfidID);                    
+			AuthResponse.put( "id" , Integer.toString(rfidID));                    
 			AuthResponse.put( "firstName"  , firstname);           
 			AuthResponse.put("lastName"  , lastname);   
 			AuthResponse.put( "authLevel"  , role);
@@ -329,7 +330,7 @@ public class VehicleDbModel {
 			}
 			else
 			{		
-				AuthResponse.put( "id" , rfidID);                    
+				AuthResponse.put( "id" , Integer.toString(rfidID));                    
 				AuthResponse.put( "firstName"  , "");           
 				AuthResponse.put("lastName"  , "");   
 				AuthResponse.put( "authLevel"  , "");
@@ -407,12 +408,18 @@ public class VehicleDbModel {
 		            }
 		            else
 		            {
+		            	System.out.println("The driver isn't deselected from the vehicle.");
+		            	System.out.println("The driver isn't assigend to the vehicle.");
+		            	DatabaseThread refDatabaseThread = DatabaseThread.getinstance();
+					    refDatabaseThread.clearFirstObjectofList();
 		            	return false;
 		            }
 		            	
 	            }
 	            catch(Exception ex)
 	            {
+	            	DatabaseThread refDatabaseThread = DatabaseThread.getinstance();
+				    refDatabaseThread.clearFirstObjectofList();
 	            	System.out.println("User does not exist or database is not connected! "+ex);
 	            	return false;
 	            }

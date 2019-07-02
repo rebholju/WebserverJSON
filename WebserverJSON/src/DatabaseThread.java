@@ -1,4 +1,3 @@
-import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.util.LinkedList;
@@ -79,6 +78,8 @@ public class DatabaseThread extends Thread
 		{
 			// Get MQTT Object from LinkedList and extract the topic and the message
 			//MQTTObject object = this.list.removeFirst();
+			if(this.list.getFirst() != null)
+			{
 			MQTTObject object = this.list.getFirst();
 			String topic = object.getTopic();
 			MqttMessage mqttMessage = object.getMqttMessage();
@@ -98,8 +99,11 @@ public class DatabaseThread extends Thread
 		        if(authResponse != null) 
 		        {
 		        	VehicleComController.publish("/SysArch/V1/Driver/AuthResponse/", authResponse, 0);
+		        	System.out.println("Publishing message to topic was ok.");
 		        }
-		        System.out.println("Publishing message to topic was ok.");
+		        else {
+		        	System.out.println("Publishing message to topic was not ok.");
+		        }
 		    }
 		        
 		    // Check if the topic is: "/V1/Driver/LogoutRequest/"
@@ -127,10 +131,10 @@ public class DatabaseThread extends Thread
 		        VehicleDbModel SensorDataV1 = new VehicleDbModel();
 		        Boolean status = SensorDataV1.setVehicleData(sensorData, 1);
 		        if (status == true) {
-		        	System.out.println("Writing sensor values in DB was successfull.");
+		        	System.out.println("Writing all sensor values in DB was successfull.");
 		        }
 		        else {
-		        	System.out.println("Writing sensor values in DB failed!");
+		        	System.out.println("Writing all sensor values in DB failed!");
 		        }
 		    }
 		    
@@ -140,6 +144,7 @@ public class DatabaseThread extends Thread
 		    	clearFirstObjectofList();
 		    	System.out.println("Currently there will be no OS data written in DB!");
 		    }
+			} 
 		}
 		catch(NoSuchElementException ex)
 		{
