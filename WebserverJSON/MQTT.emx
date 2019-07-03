@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--xtools2_universal_type_manager-->
+<!--Rational Software Architect Designer 9.5-->
+<?com.ibm.xtools.emf.core.signature <signature id="com.ibm.xtools.mmi.ui.signatures.diagram" version="7.0.0"><feature description="" name="Rational Modeling Platform (com.ibm.xtools.rmp)" url="" version="7.0.0"/></signature>?>
+<?com.ibm.xtools.emf.core.signature <signature id="com.ibm.xtools.uml.msl.model" version="7.0.0"><feature description="" name="com.ibm.xtools.ruml.feature" url="" version="7.0.0"/></signature>?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Default="http:///schemas/Default/_fNm3AAqoEd6-N_NOT9vsCA/2" xmlns:JavaTransformation50="http:///schemas/JavaTransformation50/_znHmkE3YEd-tPpJR7OP4Bg/34" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML" xsi:schemaLocation="http:///schemas/Default/_fNm3AAqoEd6-N_NOT9vsCA/2 pathmap://UML2_MSL_PROFILES/Default.epx#_fNwoAAqoEd6-N_NOT9vsCA?Default/Default? http:///schemas/JavaTransformation50/_znHmkE3YEd-tPpJR7OP4Bg/34 pathmap://TRANSFORM_JAVA5_PROFILES/JavaTransformProfile.epx#_znahgE3YEd-tPpJR7OP4Bg?JavaTransformation5.0/JavaTransformation50?">
+  <uml:Package xmi:id="_AxbCEJ1tEemMSo-RzUJTPQ" name="MQTT">
+    <packageImport xmi:id="_AxcQMp1tEemMSo-RzUJTPQ">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packageImport xmi:id="_AxcQM51tEemMSo-RzUJTPQ">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Class" xmi:id="_A4IHAJ1tEemMSo-RzUJTPQ" name="VehicleCallback" clientDependency="_A4aa4J1tEemMSo-RzUJTPQ">
+      <ownedComment xmi:id="_A4IuEJ1tEemMSo-RzUJTPQ" annotatedElement="_A4IHAJ1tEemMSo-RzUJTPQ">
+        <body>Implementation&amp;nbsp;of&amp;nbsp;the&amp;nbsp;MqttClalback&amp;nbsp;class&amp;nbsp;to&amp;nbsp;enable&amp;nbsp;the&amp;nbsp;MQTT&lt;br>Callbacks&amp;nbsp;for&amp;nbsp;logging&amp;nbsp;the&amp;nbsp;connection&amp;nbsp;status&amp;nbsp;and&amp;nbsp;trigger&amp;nbsp;&lt;br>an&amp;nbsp;event&amp;nbsp;when&amp;nbsp;a&amp;nbsp;message&amp;nbsp;is&amp;nbsp;publish&amp;nbsp;on&amp;nbsp;the&amp;nbsp;initialized&amp;nbsp;topics.&amp;nbsp;</body>
+      </ownedComment>
+      <interfaceRealization xmi:id="_A4aa4J1tEemMSo-RzUJTPQ" client="_A4IHAJ1tEemMSo-RzUJTPQ">
+        <supplier xmi:type="uml:Interface" href="mmi:///#jbintype%5Ename=org.eclipse.paho.client.mqttv3.MqttCallback%5Bproject%5Eid=WebserverJSON%5D$uml.Interface"/>
+        <contract href="mmi:///#jbintype%5Ename=org.eclipse.paho.client.mqttv3.MqttCallback%5Bproject%5Eid=WebserverJSON%5D$uml.Interface"/>
+      </interfaceRealization>
+      <ownedOperation xmi:id="_A4QC0J1tEemMSo-RzUJTPQ" name="connectionLost" visibility="public">
+        <ownedComment xmi:id="_A4Qp4J1tEemMSo-RzUJTPQ" annotatedElement="_A4QC0J1tEemMSo-RzUJTPQ">
+          <body>Overrides&amp;nbsp;the&amp;nbsp;connectionLost&amp;nbsp;method&amp;nbsp;from&amp;nbsp;MqttCallback.&amp;nbsp;&lt;br>This&amp;nbsp;method&amp;nbsp;is&amp;nbsp;called&amp;nbsp;when&amp;nbsp;the&amp;nbsp;connection&amp;nbsp;to&amp;nbsp;the&amp;nbsp;server&amp;nbsp;is&amp;nbsp;lost.&amp;nbsp;If&amp;nbsp;there&lt;br>is&amp;nbsp;no&amp;nbsp;cause&amp;nbsp;then&amp;nbsp;it&amp;nbsp;was&amp;nbsp;a&amp;nbsp;clean&amp;nbsp;disconnect.&amp;nbsp;The&amp;nbsp;connectionLost&amp;nbsp;callback&lt;br>will&amp;nbsp;be&amp;nbsp;invoked&amp;nbsp;if&amp;nbsp;registered&amp;nbsp;and&amp;nbsp;run&amp;nbsp;on&amp;nbsp;the&amp;nbsp;thread&amp;nbsp;that&amp;nbsp;requested&lt;br>shutdown&amp;nbsp;e.g.&amp;nbsp;receiver&amp;nbsp;or&amp;nbsp;sender&amp;nbsp;thread.&amp;nbsp;If&amp;nbsp;the&amp;nbsp;request&amp;nbsp;was&amp;nbsp;a&amp;nbsp;user&lt;br>initiated&amp;nbsp;disconnect&amp;nbsp;then&amp;nbsp;the&amp;nbsp;disconnect&amp;nbsp;token&amp;nbsp;will&amp;nbsp;be&amp;nbsp;notified.&lt;br>&lt;br>@param&amp;nbsp;cause&amp;nbsp;the&amp;nbsp;reason&amp;nbsp;behind&amp;nbsp;the&amp;nbsp;loss&amp;nbsp;of&amp;nbsp;connection.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_A4RQ8J1tEemMSo-RzUJTPQ" name="cause">
+          <type xmi:type="uml:Class" href="mmi:///#jbintype%5Ename=java.lang.Throwable%5Bproject%5Eid=WebserverJSON%5D$uml.Class"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_A4TGIJ1tEemMSo-RzUJTPQ" name="messageArrived" visibility="public">
+        <ownedComment xmi:id="_A4TtMJ1tEemMSo-RzUJTPQ" annotatedElement="_A4TGIJ1tEemMSo-RzUJTPQ">
+          <body>Overrides&amp;nbsp;the&amp;nbsp;messageArrived&amp;nbsp;method&amp;nbsp;from&amp;nbsp;MqttCallback.&lt;br>This&amp;nbsp;method&amp;nbsp;is&amp;nbsp;called&amp;nbsp;when&amp;nbsp;a&amp;nbsp;message&amp;nbsp;arrives&amp;nbsp;on&amp;nbsp;a&amp;nbsp;topic.&amp;nbsp;Messages&amp;nbsp;are&lt;br>only&amp;nbsp;added&amp;nbsp;to&amp;nbsp;the&amp;nbsp;queue&amp;nbsp;for&amp;nbsp;inbound&amp;nbsp;messages&amp;nbsp;if&amp;nbsp;the&amp;nbsp;client&amp;nbsp;is&amp;nbsp;not&lt;br>quiescing.&lt;br>&lt;br>@param&amp;nbsp;topic&amp;nbsp;name&amp;nbsp;of&amp;nbsp;the&amp;nbsp;topic&amp;nbsp;on&amp;nbsp;the&amp;nbsp;message&amp;nbsp;was&amp;nbsp;published&amp;nbsp;to&lt;br>@param&amp;nbsp;mqttMessage&amp;nbsp;the&amp;nbsp;actual&amp;nbsp;message.&lt;br>@throws&amp;nbsp;Exception&amp;nbsp;if&amp;nbsp;a&amp;nbsp;terminal&amp;nbsp;error&amp;nbsp;has&amp;nbsp;occurred,&amp;nbsp;and&amp;nbsp;the&amp;nbsp;client&amp;nbsp;should&amp;nbsp;be&amp;nbsp;shut&amp;nbsp;down.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_A4U7UJ1tEemMSo-RzUJTPQ" name="topic">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_A4U7UZ1tEemMSo-RzUJTPQ" name="mqttMessage">
+          <type xmi:type="uml:Class" href="mmi:///#jbintype%5Ename=org.eclipse.paho.client.mqttv3.MqttMessage%5Bproject%5Eid=WebserverJSON%5D$uml.Class"/>
+        </ownedParameter>
+        <raisedException xmi:type="uml:Class" href="mmi:///#jbintype%5Ename=java.lang.Exception%5Bproject%5Eid=WebserverJSON%5D$uml.Class"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_A4WwgJ1tEemMSo-RzUJTPQ" name="deliveryComplete" visibility="public">
+        <ownedComment xmi:id="_A4XXkJ1tEemMSo-RzUJTPQ" annotatedElement="_A4WwgJ1tEemMSo-RzUJTPQ">
+          <body>Overrides&amp;nbsp;the&amp;nbsp;deliveryComplete&amp;nbsp;method&amp;nbsp;from&amp;nbsp;MqttCallback.&lt;br>Called&amp;nbsp;when&amp;nbsp;delivery&amp;nbsp;for&amp;nbsp;a&amp;nbsp;message&amp;nbsp;has&amp;nbsp;been&amp;nbsp;completed,&amp;nbsp;and&amp;nbsp;all&lt;br>acknowledgments&amp;nbsp;have&amp;nbsp;been&amp;nbsp;received.&amp;nbsp;For&amp;nbsp;QoS&amp;nbsp;0&amp;nbsp;messages&amp;nbsp;it&amp;nbsp;is&lt;br>called&amp;nbsp;once&amp;nbsp;the&amp;nbsp;message&amp;nbsp;has&amp;nbsp;been&amp;nbsp;handed&amp;nbsp;to&amp;nbsp;the&amp;nbsp;network&amp;nbsp;for&lt;br>delivery.&amp;nbsp;For&amp;nbsp;QoS&amp;nbsp;1&amp;nbsp;it&amp;nbsp;is&amp;nbsp;called&amp;nbsp;when&amp;nbsp;PUBACK&amp;nbsp;is&amp;nbsp;received&amp;nbsp;and&lt;br>for&amp;nbsp;QoS&amp;nbsp;2&amp;nbsp;when&amp;nbsp;PUBCOMP&amp;nbsp;is&amp;nbsp;received.&amp;nbsp;The&amp;nbsp;token&amp;nbsp;will&amp;nbsp;be&amp;nbsp;the&amp;nbsp;same&lt;br>token&amp;nbsp;as&amp;nbsp;that&amp;nbsp;returned&amp;nbsp;when&amp;nbsp;the&amp;nbsp;message&amp;nbsp;was&amp;nbsp;published.&lt;br>&lt;br>@param&amp;nbsp;MqttDeliveryToken&amp;nbsp;the&amp;nbsp;delivery&amp;nbsp;token&amp;nbsp;associated&amp;nbsp;with&amp;nbsp;the&amp;nbsp;message.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_A4YlsJ1tEemMSo-RzUJTPQ" name="MqttDeliveryToken">
+          <type xmi:type="uml:Interface" href="mmi:///#jbintype%5Ename=org.eclipse.paho.client.mqttv3.IMqttDeliveryToken%5Bproject%5Eid=WebserverJSON%5D$uml.Interface"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_A4JVIJ1tEemMSo-RzUJTPQ" name="VehicleDbModel">
+      <ownedComment xmi:id="_A4J8MJ1tEemMSo-RzUJTPQ" annotatedElement="_A4JVIJ1tEemMSo-RzUJTPQ">
+        <body>Class&amp;nbsp;to&amp;nbsp;write&amp;nbsp;and&amp;nbsp;read&amp;nbsp;user&amp;nbsp;data&amp;nbsp;and&amp;nbsp;vehicle&amp;nbsp;values&lt;br>&amp;nbsp;into&amp;nbsp;the&amp;nbsp;database.&amp;nbsp;In&amp;nbsp;the&amp;nbsp;class&amp;nbsp;constructor&amp;nbsp;is&amp;nbsp;the&amp;nbsp;connection&lt;br>&amp;nbsp;to&amp;nbsp;the&amp;nbsp;mysql&amp;nbsp;database&amp;nbsp;specified&amp;nbsp;and&amp;nbsp;by&amp;nbsp;initialization&amp;nbsp;created.</body>
+      </ownedComment>
+      <ownedAttribute xmi:id="_A4bB8J1tEemMSo-RzUJTPQ" name="conn" visibility="private">
+        <type xmi:type="uml:Interface" href="mmi:///#jbintype%5Ename=java.sql.Connection%5Bproject%5Eid=WebserverJSON%5D$uml.Interface"/>
+        <defaultValue xmi:type="uml:LiteralNull" xmi:id="_A4bpAJ1tEemMSo-RzUJTPQ"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_A4cQEJ1tEemMSo-RzUJTPQ" name="preparedStatement" visibility="private">
+        <type xmi:type="uml:Interface" href="mmi:///#jbintype%5Ename=java.sql.PreparedStatement%5Bproject%5Eid=WebserverJSON%5D$uml.Interface"/>
+        <defaultValue xmi:type="uml:LiteralNull" xmi:id="_A4c3IJ1tEemMSo-RzUJTPQ"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_A4deMJ1tEemMSo-RzUJTPQ" name="resultSet" visibility="private">
+        <type xmi:type="uml:Interface" href="mmi:///#jbintype%5Ename=java.sql.ResultSet%5Bproject%5Eid=WebserverJSON%5D$uml.Interface"/>
+        <defaultValue xmi:type="uml:LiteralNull" xmi:id="_A4eFQJ1tEemMSo-RzUJTPQ"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_A4esUJ1tEemMSo-RzUJTPQ" name="result" visibility="private">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+        <defaultValue xmi:type="uml:LiteralInteger" xmi:id="_A4fTYJ1tEemMSo-RzUJTPQ" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_A4f6cJ1tEemMSo-RzUJTPQ" name="availabileVehicles" visibility="public" isReadOnly="true" isDerived="true">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_A4f6cZ1tEemMSo-RzUJTPQ" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_A4f6cp1tEemMSo-RzUJTPQ"/>
+      </ownedAttribute>
+      <ownedOperation xmi:id="_A4hIkZ1tEemMSo-RzUJTPQ" name="VehicleDbModel" visibility="public">
+        <ownedComment xmi:id="_A4hIkp1tEemMSo-RzUJTPQ" annotatedElement="_A4hIkZ1tEemMSo-RzUJTPQ">
+          <body>Constructor&amp;nbsp;of&amp;nbsp;the&amp;nbsp;class&amp;nbsp;VehicleDbModel.&amp;nbsp;Here&amp;nbsp;is&amp;nbsp;the&lt;br>DB&amp;nbsp;driver&amp;nbsp;loaded&amp;nbsp;and&amp;nbsp;the&amp;nbsp;connection&amp;nbsp;established.</body>
+        </ownedComment>
+      </ownedOperation>
+      <ownedOperation xmi:id="_A4iWsJ1tEemMSo-RzUJTPQ" name="Main" visibility="public">
+        <ownedComment xmi:id="_A4i9wJ1tEemMSo-RzUJTPQ" annotatedElement="_A4iWsJ1tEemMSo-RzUJTPQ">
+          <body>Method&amp;nbsp;to&amp;nbsp;test&amp;nbsp;the&amp;nbsp;VehicleDbModel&amp;nbsp;functions&amp;nbsp;&lt;br>by&amp;nbsp;reading&amp;nbsp;a&amp;nbsp;defined&amp;nbsp;json&amp;nbsp;file&amp;nbsp;&amp;nbsp;</body>
+        </ownedComment>
+      </ownedOperation>
+      <ownedOperation xmi:id="_A4kL4J1tEemMSo-RzUJTPQ" name="setVehicleData" visibility="public">
+        <ownedComment xmi:id="_A4ky8J1tEemMSo-RzUJTPQ" annotatedElement="_A4kL4J1tEemMSo-RzUJTPQ">
+          <body>Method&amp;nbsp;to&amp;nbsp;read&amp;nbsp;the&amp;nbsp;sensor&amp;nbsp;values&amp;nbsp;from&amp;nbsp;the&amp;nbsp;published&amp;nbsp;String&amp;nbsp;and&lt;br>write&amp;nbsp;the&amp;nbsp;values&amp;nbsp;at&amp;nbsp;into&amp;nbsp;the&amp;nbsp;database.&lt;br>@param&amp;nbsp;JSONString&amp;nbsp;String&amp;nbsp;from&amp;nbsp;MQTT&amp;nbsp;object&lt;br>@param&amp;nbsp;vehicleNumber&amp;nbsp;&amp;nbsp;&amp;nbsp;Integer&amp;nbsp;Number&amp;nbsp;of&amp;nbsp;the&amp;nbsp;corresponding&amp;nbsp;vehicle&lt;br>@return&amp;nbsp;status&amp;nbsp;Boolean&amp;nbsp;status&amp;nbsp;writing&amp;nbsp;in&amp;nbsp;DB&amp;nbsp;</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_A4ky8p1tEemMSo-RzUJTPQ" name="ReturnParameter" direction="return">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#boolean"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_A4moIJ1tEemMSo-RzUJTPQ" name="JSONString">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_A4nPMJ1tEemMSo-RzUJTPQ" name="vehicleNumber">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_A4nPMZ1tEemMSo-RzUJTPQ" name="authentificateDriver" visibility="public">
+        <ownedComment xmi:id="_A4n2QJ1tEemMSo-RzUJTPQ" annotatedElement="_A4nPMZ1tEemMSo-RzUJTPQ">
+          <body>Method&amp;nbsp;to&amp;nbsp;read&amp;nbsp;the&amp;nbsp;RFID&amp;nbsp;and&amp;nbsp;timestamp&amp;nbsp;from&amp;nbsp;the&amp;nbsp;published&amp;nbsp;String&amp;nbsp;and&lt;br>check&amp;nbsp;with&amp;nbsp;DB&amp;nbsp;if&amp;nbsp;the&amp;nbsp;values&amp;nbsp;matches&amp;nbsp;a&amp;nbsp;corresponding&amp;nbsp;user.&lt;br>@param&amp;nbsp;JSONString&amp;nbsp;String&amp;nbsp;from&amp;nbsp;MQTT&amp;nbsp;object&lt;br>@return&amp;nbsp;authResponse&amp;nbsp;String&amp;nbsp;with&amp;nbsp;id,&amp;nbsp;userdata&amp;nbsp;and&amp;nbsp;timestamp&amp;nbsp;in&amp;nbsp;JSON&amp;nbsp;design&amp;nbsp;</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_A4n2Qp1tEemMSo-RzUJTPQ" name="ReturnParameter" direction="return">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_A4prcJ1tEemMSo-RzUJTPQ" name="JSONString">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_A4prcZ1tEemMSo-RzUJTPQ" name="logoutRequest" visibility="public">
+        <ownedComment xmi:id="_A4qSgJ1tEemMSo-RzUJTPQ" annotatedElement="_A4prcZ1tEemMSo-RzUJTPQ">
+          <body>Method&amp;nbsp;to&amp;nbsp;read&amp;nbsp;the&amp;nbsp;RFID&amp;nbsp;an&amp;nbsp;timestamp&amp;nbsp;from&amp;nbsp;the&amp;nbsp;published&amp;nbsp;String&amp;nbsp;and&lt;br>delete&amp;nbsp;driver&amp;nbsp;from&amp;nbsp;actualSensorData&amp;nbsp;in&amp;nbsp;database.&lt;br>@param&amp;nbsp;JSONString&amp;nbsp;String&amp;nbsp;from&amp;nbsp;MQTT&amp;nbsp;object&lt;br>@return&amp;nbsp;status&amp;nbsp;Boolean&amp;nbsp;status&amp;nbsp;writing&amp;nbsp;in&amp;nbsp;DB&amp;nbsp;</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_A4q5kJ1tEemMSo-RzUJTPQ" name="ReturnParameter" direction="return">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#boolean"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_A4rgoJ1tEemMSo-RzUJTPQ" name="JSONString">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_A4KjQJ1tEemMSo-RzUJTPQ" name="DatabaseThread">
+      <ownedComment xmi:id="_A4KjQZ1tEemMSo-RzUJTPQ" annotatedElement="_A4KjQJ1tEemMSo-RzUJTPQ">
+        <body>Thread&amp;nbsp;to&amp;nbsp;handle&amp;nbsp;the&amp;nbsp;access&amp;nbsp;to&amp;nbsp;the&amp;nbsp;mysql&amp;nbsp;database.&lt;br>Therefore&amp;nbsp;a&amp;nbsp;Linkedlist&amp;nbsp;is&amp;nbsp;created&amp;nbsp;where&amp;nbsp;the&amp;nbsp;MQTTObject's&amp;nbsp;could&amp;nbsp;be&amp;nbsp;added&amp;nbsp;&lt;br>and&amp;nbsp;retrieved.&amp;nbsp;The&amp;nbsp;class&amp;nbsp;is&amp;nbsp;an&amp;nbsp;extension&amp;nbsp;of&amp;nbsp;the&amp;nbsp;class&amp;nbsp;Thread&amp;nbsp;from&amp;nbsp;Java.lang.</body>
+      </ownedComment>
+      <generalization xmi:id="_A43t4J1tEemMSo-RzUJTPQ">
+        <general xmi:type="uml:Class" href="mmi:///#jbintype%5Ename=java.lang.Thread%5Bproject%5Eid=WebserverJSON%5D$uml.Class"/>
+      </generalization>
+      <ownedAttribute xmi:id="_A4suwJ1tEemMSo-RzUJTPQ" name="instance" visibility="private" isStatic="true" type="_A4KjQJ1tEemMSo-RzUJTPQ"/>
+      <ownedAttribute xmi:id="_A4t84J1tEemMSo-RzUJTPQ" name="list" visibility="public" type="_A4MYcJ1tEemMSo-RzUJTPQ">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_A4t84Z1tEemMSo-RzUJTPQ" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_A4t84p1tEemMSo-RzUJTPQ"/>
+      </ownedAttribute>
+      <ownedOperation xmi:id="_A4vyEJ1tEemMSo-RzUJTPQ" name="DatabaseThread" visibility="public">
+        <ownedComment xmi:id="_A4vyEZ1tEemMSo-RzUJTPQ" annotatedElement="_A4vyEJ1tEemMSo-RzUJTPQ">
+          <body>Constructs&amp;nbsp;a&amp;nbsp;new&amp;nbsp;DatabaseThread&amp;nbsp;and&amp;nbsp;creates&amp;nbsp;a&amp;nbsp;LinkedList&lt;br>for&amp;nbsp;the&amp;nbsp;MQTT&amp;nbsp;Objects.</body>
+        </ownedComment>
+      </ownedOperation>
+      <ownedOperation xmi:id="_A4xAMJ1tEemMSo-RzUJTPQ" name="addtoList" visibility="public">
+        <ownedComment xmi:id="_A4xnQJ1tEemMSo-RzUJTPQ" annotatedElement="_A4xAMJ1tEemMSo-RzUJTPQ">
+          <body>Method&amp;nbsp;to&amp;nbsp;add&amp;nbsp;the&amp;nbsp;given&amp;nbsp;MQTTObject&amp;nbsp;to&amp;nbsp;the&amp;nbsp;LinkedList.&lt;br>@param&amp;nbsp;mqttobject&amp;nbsp;Object&amp;nbsp;of&amp;nbsp;class&amp;nbsp;MQTTObject&amp;nbsp;</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_A4y1YJ1tEemMSo-RzUJTPQ" name="mqttobject" type="_A4MYcJ1tEemMSo-RzUJTPQ"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_A4y1YZ1tEemMSo-RzUJTPQ" name="run" visibility="public">
+        <ownedComment xmi:id="_A4zccJ1tEemMSo-RzUJTPQ" annotatedElement="_A4y1YZ1tEemMSo-RzUJTPQ">
+          <body>Run&amp;nbsp;method&amp;nbsp;of&amp;nbsp;the&amp;nbsp;DatabaseThread.&amp;nbsp;Overrides&amp;nbsp;the&amp;nbsp;run&lt;br>method&amp;nbsp;from&amp;nbsp;Java.lang.Thread.</body>
+        </ownedComment>
+      </ownedOperation>
+      <ownedOperation xmi:id="_A40DgZ1tEemMSo-RzUJTPQ" name="clearFirstObjectofList" visibility="public">
+        <ownedComment xmi:id="_A40qkJ1tEemMSo-RzUJTPQ" annotatedElement="_A40DgZ1tEemMSo-RzUJTPQ">
+          <body>Method&amp;nbsp;to&amp;nbsp;clear&amp;nbsp;first&amp;nbsp;Object&amp;nbsp;in&amp;nbsp;List&amp;nbsp;when&amp;nbsp;Data&amp;nbsp;is&amp;nbsp;written&amp;nbsp;into&amp;nbsp;the&amp;nbsp;Database.&amp;nbsp;&lt;br>Called&amp;nbsp;from&amp;nbsp;outside&amp;nbsp;(VehicleDbModel)&amp;nbsp;to&amp;nbsp;guarantee&amp;nbsp;that&amp;nbsp;the&amp;nbsp;Data&amp;nbsp;is&amp;nbsp;written&amp;nbsp;into&amp;nbsp;the&amp;nbsp;Database</body>
+        </ownedComment>
+      </ownedOperation>
+      <ownedOperation xmi:id="_A41RoJ1tEemMSo-RzUJTPQ" name="executeDatabaseAccess" visibility="public">
+        <ownedComment xmi:id="_A414sJ1tEemMSo-RzUJTPQ" annotatedElement="_A41RoJ1tEemMSo-RzUJTPQ">
+          <body>Method&amp;nbsp;to&amp;nbsp;retrieve&amp;nbsp;MQTT&amp;nbsp;object&amp;nbsp;from&amp;nbsp;LinkedList&amp;nbsp;and&amp;nbsp;compare&amp;nbsp;the&amp;nbsp;topic.&amp;nbsp;If&amp;nbsp;the&amp;nbsp;topic&amp;nbsp;string&lt;br>matches&amp;nbsp;a&amp;nbsp;specified&amp;nbsp;one&amp;nbsp;the&amp;nbsp;String&amp;nbsp;data&amp;nbsp;is&amp;nbsp;retried&amp;nbsp;an&amp;nbsp;the&amp;nbsp;respective&amp;nbsp;method&amp;nbsp;to&amp;nbsp;write&amp;nbsp;into&lt;br>and&amp;nbsp;read&amp;nbsp;from&amp;nbsp;DB.&amp;nbsp;When&amp;nbsp;an&amp;nbsp;authorization&amp;nbsp;request&amp;nbsp;is&amp;nbsp;send&amp;nbsp;and&amp;nbsp;it&amp;nbsp;is&amp;nbsp;OK&amp;nbsp;the&amp;nbsp;data&amp;nbsp;will&amp;nbsp;be&amp;nbsp;published.</body>
+        </ownedComment>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_A4MYcJ1tEemMSo-RzUJTPQ" name="MQTTObject">
+      <ownedComment xmi:id="_A4MYcZ1tEemMSo-RzUJTPQ" annotatedElement="_A4MYcJ1tEemMSo-RzUJTPQ">
+        <body>An&amp;nbsp;MQTT&amp;nbsp;object&amp;nbsp;holds&amp;nbsp;the&amp;nbsp;MQTT&amp;nbsp;topic&amp;nbsp;and&amp;nbsp;the&lt;br>MQTT&amp;nbsp;Message.&amp;nbsp;The&amp;nbsp;topic&amp;nbsp;is&amp;nbsp;represented&amp;nbsp;as&amp;nbsp;a&amp;nbsp;string&amp;nbsp;and&lt;br>the&amp;nbsp;message&amp;nbsp;includes&amp;nbsp;a&amp;nbsp;&quot;payload&quot;&amp;nbsp;(the&amp;nbsp;body&amp;nbsp;of&amp;nbsp;the&amp;nbsp;message)&lt;br>represented&amp;nbsp;as&amp;nbsp;a&amp;nbsp;byte[].&amp;nbsp;The&amp;nbsp;can&amp;nbsp;be&amp;nbsp;accessed&amp;nbsp;by&amp;nbsp;get-Methods.</body>
+      </ownedComment>
+      <ownedAttribute xmi:id="_A44U8J1tEemMSo-RzUJTPQ" name="topic" visibility="private">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_A5A30J1tEemMSo-RzUJTPQ" name="mqttMessage" visibility="private">
+        <type xmi:type="uml:Class" href="mmi:///#jbintype%5Ename=org.eclipse.paho.client.mqttv3.MqttMessage%5Bproject%5Eid=WebserverJSON%5D$uml.Class"/>
+      </ownedAttribute>
+      <ownedOperation xmi:id="_A5CF8J1tEemMSo-RzUJTPQ" name="MQTTObject" visibility="public">
+        <ownedComment xmi:id="_A5CtAJ1tEemMSo-RzUJTPQ" annotatedElement="_A5CF8J1tEemMSo-RzUJTPQ">
+          <body>Constructs&amp;nbsp;a&amp;nbsp;MQTTObject&amp;nbsp;Object&amp;nbsp;with&amp;nbsp;the&amp;nbsp;specified&amp;nbsp;byte&amp;nbsp;array&amp;nbsp;as&amp;nbsp;a&amp;nbsp;payload,&lt;br>and&amp;nbsp;all&amp;nbsp;other&amp;nbsp;values&amp;nbsp;set&amp;nbsp;to&amp;nbsp;defaults.&lt;br>@param&amp;nbsp;topic&amp;nbsp;The&amp;nbsp;topic&amp;nbsp;as&amp;nbsp;String&lt;br>@param&amp;nbsp;mqttMessage&amp;nbsp;The&amp;nbsp;MqttMessage&amp;nbsp;Object</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_A5DUEJ1tEemMSo-RzUJTPQ" name="topic">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_A5D7IJ1tEemMSo-RzUJTPQ" name="mqttMessage">
+          <type xmi:type="uml:Class" href="mmi:///#jbintype%5Ename=org.eclipse.paho.client.mqttv3.MqttMessage%5Bproject%5Eid=WebserverJSON%5D$uml.Class"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_A4M_gJ1tEemMSo-RzUJTPQ" name="VehicleComController">
+      <ownedComment xmi:id="_A4M_gZ1tEemMSo-RzUJTPQ" annotatedElement="_A4M_gJ1tEemMSo-RzUJTPQ">
+        <body>This&amp;nbsp;class&amp;nbsp;handles&amp;nbsp;the&amp;nbsp;connection,&amp;nbsp;subscription&lt;br>&amp;nbsp;publishing&amp;nbsp;and&amp;nbsp;disconnection&amp;nbsp;to&amp;nbsp;the&amp;nbsp;MQTT&amp;nbsp;broker.</body>
+      </ownedComment>
+      <ownedAttribute xmi:id="_A5EiMJ1tEemMSo-RzUJTPQ" name="ServerURI" visibility="private">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        <defaultValue xmi:type="uml:LiteralString" xmi:id="_A5FJQJ1tEemMSo-RzUJTPQ" value="tcp://localhost"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_A5FJQZ1tEemMSo-RzUJTPQ" name="port" visibility="private">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        <defaultValue xmi:type="uml:LiteralString" xmi:id="_A5GXYJ1tEemMSo-RzUJTPQ" value="8884"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_A5GXYZ1tEemMSo-RzUJTPQ" name="broker" visibility="private">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_A5G-cJ1tEemMSo-RzUJTPQ">
+          <language></language>
+          <body>ServerURI + &quot;:&quot; + port</body>
+        </defaultValue>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_A5HlgJ1tEemMSo-RzUJTPQ" name="clientId" visibility="private">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        <defaultValue xmi:type="uml:LiteralString" xmi:id="_A5IMkJ1tEemMSo-RzUJTPQ" value="Webservice_W4"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_A5IzoJ1tEemMSo-RzUJTPQ" name="userName" visibility="private">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        <defaultValue xmi:type="uml:LiteralString" xmi:id="_A5JasJ1tEemMSo-RzUJTPQ" value="W4"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_A5JasZ1tEemMSo-RzUJTPQ" name="password" visibility="private">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        <defaultValue xmi:type="uml:LiteralString" xmi:id="_A5Ko0J1tEemMSo-RzUJTPQ" value="DEF"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_A5LP4J1tEemMSo-RzUJTPQ" name="persistence" visibility="private">
+        <type xmi:type="uml:Class" href="mmi:///#jbintype%5Ename=org.eclipse.paho.client.mqttv3.persist.MemoryPersistence%5Bproject%5Eid=WebserverJSON%5D$uml.Class"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_A5L28J1tEemMSo-RzUJTPQ" name="w4MqttClient" visibility="private" isStatic="true">
+        <type xmi:type="uml:Class" href="mmi:///#jbintype%5Ename=org.eclipse.paho.client.mqttv3.MqttClient%5Bproject%5Eid=WebserverJSON%5D$uml.Class"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_A5MeAJ1tEemMSo-RzUJTPQ" name="options" visibility="private">
+        <type xmi:type="uml:Class" href="mmi:///#jbintype%5Ename=org.eclipse.paho.client.mqttv3.MqttConnectOptions%5Bproject%5Eid=WebserverJSON%5D$uml.Class"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_A5NsIJ1tEemMSo-RzUJTPQ" name="status" visibility="private" isStatic="true">
+        <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#boolean"/>
+      </ownedAttribute>
+      <ownedOperation xmi:id="_A5OTMJ1tEemMSo-RzUJTPQ" name="VehicleComController" visibility="public">
+        <ownedComment xmi:id="_A5O6QJ1tEemMSo-RzUJTPQ" annotatedElement="_A5OTMJ1tEemMSo-RzUJTPQ">
+          <body>Constructor&amp;nbsp;to&amp;nbsp;create&amp;nbsp;VehicleComController&amp;nbsp;and&amp;nbsp;set&amp;nbsp;broker&amp;nbsp;&lt;br>connection&amp;nbsp;status&amp;nbsp;parameter.</body>
+        </ownedComment>
+      </ownedOperation>
+      <ownedOperation xmi:id="_A5O6Qp1tEemMSo-RzUJTPQ" name="initializationMQTT" visibility="public">
+        <ownedComment xmi:id="_A5PhUJ1tEemMSo-RzUJTPQ" annotatedElement="_A5O6Qp1tEemMSo-RzUJTPQ">
+          <body>Method&amp;nbsp;initializes&amp;nbsp;the&amp;nbsp;Client&amp;nbsp;for&amp;nbsp;the&amp;nbsp;connection&amp;nbsp;to&amp;nbsp;the&amp;nbsp;Broker.&lt;br>The&amp;nbsp;options&amp;nbsp;will&amp;nbsp;be&amp;nbsp;configured,&amp;nbsp;a&amp;nbsp;connection&amp;nbsp;established&amp;nbsp;and&amp;nbsp;to&amp;nbsp;the&lt;br>corresponding&amp;nbsp;topics&amp;nbsp;subscribed.&lt;br>@param&amp;nbsp;topics&amp;nbsp;Stringarray&amp;nbsp;of&amp;nbsp;the&amp;nbsp;topics&lt;br>@param&amp;nbsp;qos&amp;nbsp;Quality&amp;nbsp;of&amp;nbsp;Service&amp;nbsp;as&amp;nbsp;Integerarray</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_A5QvcJ1tEemMSo-RzUJTPQ" name="topics">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_A5RWgJ1tEemMSo-RzUJTPQ" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_A5RWgZ1tEemMSo-RzUJTPQ"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_A5R9kJ1tEemMSo-RzUJTPQ" name="qos">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_A5R9kZ1tEemMSo-RzUJTPQ" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_A5R9kp1tEemMSo-RzUJTPQ"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_A5SkoZ1tEemMSo-RzUJTPQ" name="connect" visibility="public">
+        <ownedComment xmi:id="_A5TLsJ1tEemMSo-RzUJTPQ" annotatedElement="_A5SkoZ1tEemMSo-RzUJTPQ">
+          <body>Method&amp;nbsp;to&amp;nbsp;connect&amp;nbsp;the&amp;nbsp;Client&amp;nbsp;to&amp;nbsp;the&amp;nbsp;Broker&lt;br>This&amp;nbsp;Method&amp;nbsp;shall&amp;nbsp;be&amp;nbsp;used&amp;nbsp;in&amp;nbsp;the&amp;nbsp;case&amp;nbsp;when&amp;nbsp;not&amp;nbsp;using&amp;nbsp;loop_forever&lt;br>&lt;br>@return&amp;nbsp;true&amp;nbsp;if&amp;nbsp;connection&amp;nbsp;was&amp;nbsp;established,&amp;nbsp;false&amp;nbsp;if&amp;nbsp;not.</body>
+        </ownedComment>
+      </ownedOperation>
+      <ownedOperation xmi:id="_A5TywJ1tEemMSo-RzUJTPQ" name="subscribe" visibility="public">
+        <ownedComment xmi:id="_A5UZ0J1tEemMSo-RzUJTPQ" annotatedElement="_A5TywJ1tEemMSo-RzUJTPQ">
+          <body>Method&amp;nbsp;to&amp;nbsp;subscribe&amp;nbsp;to&amp;nbsp;the&amp;nbsp;specified&amp;nbsp;topics&amp;nbsp;on&amp;nbsp;the&amp;nbsp;Broker.&lt;br>@param&amp;nbsp;topic&amp;nbsp;Stringarray&amp;nbsp;of&amp;nbsp;topics&lt;br>@param&amp;nbsp;qos&amp;nbsp;Integerarray&amp;nbsp;of&amp;nbsp;Quality&amp;nbsp;of&amp;nbsp;Service</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_A5Vn8J1tEemMSo-RzUJTPQ" name="topic">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_A5Vn8Z1tEemMSo-RzUJTPQ" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_A5Vn8p1tEemMSo-RzUJTPQ"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_A5WPAZ1tEemMSo-RzUJTPQ" name="qos">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_A5W2EJ1tEemMSo-RzUJTPQ" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_A5W2EZ1tEemMSo-RzUJTPQ"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_A5XdIJ1tEemMSo-RzUJTPQ" name="publish" visibility="public" isStatic="true" concurrency="guarded">
+        <ownedComment xmi:id="_A5XdIZ1tEemMSo-RzUJTPQ" annotatedElement="_A5XdIJ1tEemMSo-RzUJTPQ">
+          <body>This&amp;nbsp;Method&amp;nbsp;publishes&amp;nbsp;a&amp;nbsp;specific&amp;nbsp;msg&amp;nbsp;on&amp;nbsp;a&amp;nbsp;specific&amp;nbsp;topic.&lt;br>&lt;br>@param&amp;nbsp;topic&amp;nbsp;The&amp;nbsp;topic&amp;nbsp;where&amp;nbsp;the&amp;nbsp;msg&amp;nbsp;should&amp;nbsp;be&amp;nbsp;published&lt;br>@param&amp;nbsp;msg&amp;nbsp;&amp;nbsp;&amp;nbsp;The&amp;nbsp;content&amp;nbsp;that&amp;nbsp;should&amp;nbsp;be&amp;nbsp;published&lt;br>@param&amp;nbsp;qos&amp;nbsp;&amp;nbsp;&amp;nbsp;The&amp;nbsp;Quality&amp;nbsp;of&amp;nbsp;Service&lt;br>@throws&amp;nbsp;MqttException&amp;nbsp;Exception&amp;nbsp;if&amp;nbsp;could&amp;nbsp;not&amp;nbsp;publish</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_A5YrQJ1tEemMSo-RzUJTPQ" name="topic">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_A5ZSUJ1tEemMSo-RzUJTPQ" name="mqttmsg">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_A5ZSUZ1tEemMSo-RzUJTPQ" name="qos">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#int"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_A5Z5YJ1tEemMSo-RzUJTPQ" name="disconnect" visibility="private" isStatic="true">
+        <ownedComment xmi:id="_A5Z5YZ1tEemMSo-RzUJTPQ" annotatedElement="_A5Z5YJ1tEemMSo-RzUJTPQ">
+          <body>This&amp;nbsp;Method&amp;nbsp;disconnects&amp;nbsp;the&amp;nbsp;Client&amp;nbsp;from&amp;nbsp;the&amp;nbsp;Broker&amp;nbsp;and&amp;nbsp;closes&amp;nbsp;the&amp;nbsp;connection.&lt;br>@throws&amp;nbsp;MqttException&amp;nbsp;Exception&amp;nbsp;if&amp;nbsp;could&amp;nbsp;not&amp;nbsp;disconnect</body>
+        </ownedComment>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_A4O0sJ1tEemMSo-RzUJTPQ" name="Main">
+      <ownedComment xmi:id="_A4O0sZ1tEemMSo-RzUJTPQ" annotatedElement="_A4O0sJ1tEemMSo-RzUJTPQ">
+        <body>The&amp;nbsp;MAIN&amp;nbsp;Class&amp;nbsp;contains&amp;nbsp;the&amp;nbsp;initialization&amp;nbsp;of&lt;br>the&amp;nbsp;VehicleComController&amp;nbsp;Class&amp;nbsp;and&amp;nbsp;the&amp;nbsp;DatabaseThread&lt;br>Class.&amp;nbsp;When&amp;nbsp;the&amp;nbsp;Thread&amp;nbsp;is&amp;nbsp;started&amp;nbsp;the&amp;nbsp;programm&amp;nbsp;is&amp;nbsp;running&lt;br>in&amp;nbsp;a&amp;nbsp;forever&amp;nbsp;Loop.</body>
+      </ownedComment>
+      <ownedOperation xmi:id="_A5bukJ1tEemMSo-RzUJTPQ" name="main" visibility="public" isStatic="true">
+        <ownedComment xmi:id="_A5bukZ1tEemMSo-RzUJTPQ" annotatedElement="_A5bukJ1tEemMSo-RzUJTPQ">
+          <body>Main&amp;nbsp;method&amp;nbsp;and&amp;nbsp;start&amp;nbsp;point&amp;nbsp;of&amp;nbsp;the&amp;nbsp;program.&lt;br>Here&amp;nbsp;are&amp;nbsp;the&amp;nbsp;initialization&amp;nbsp;of&amp;nbsp;the&amp;nbsp;classes&amp;nbsp;and&lt;br>the&amp;nbsp;start&amp;nbsp;of&amp;nbsp;the&amp;nbsp;DB&amp;nbsp;Thread.&lt;br>@param&amp;nbsp;args&amp;nbsp;The&amp;nbsp;Stringarray&amp;nbsp;as&amp;nbsp;programm&amp;nbsp;start&amp;nbsp;parameter&amp;nbsp;&amp;nbsp;</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_A5c8sJ1tEemMSo-RzUJTPQ" name="args">
+          <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_A5djwJ1tEemMSo-RzUJTPQ" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_A5djwZ1tEemMSo-RzUJTPQ"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <profileApplication xmi:id="_AxbCEZ1tEemMSo-RzUJTPQ">
+      <eAnnotations xmi:id="_AxbpIJ1tEemMSo-RzUJTPQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://UML_PROFILES/Standard.profile.uml#_yzU58YinEdqtvbnfB2L_5w"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
+    </profileApplication>
+    <profileApplication xmi:id="_AxbpIZ1tEemMSo-RzUJTPQ">
+      <eAnnotations xmi:id="_AxbpIp1tEemMSo-RzUJTPQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://UML2_MSL_PROFILES/Default.epx#_fNwoAAqoEd6-N_NOT9vsCA?Default/Default?"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML2_MSL_PROFILES/Default.epx#_a_S3wNWLEdiy4IqP8whjFA?Default?"/>
+    </profileApplication>
+    <profileApplication xmi:id="_AxcQMJ1tEemMSo-RzUJTPQ">
+      <eAnnotations xmi:id="_AxcQMZ1tEemMSo-RzUJTPQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://UML2_MSL_PROFILES/Deployment.epx#_4OVBUD0TEeKt-L0gyEptgQ?Deployment/Deployment?"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML2_MSL_PROFILES/Deployment.epx#_vjbuwOvHEdiDX5bji0iVSA?Deployment?"/>
+    </profileApplication>
+    <profileApplication xmi:id="_A4f6c51tEemMSo-RzUJTPQ">
+      <eAnnotations xmi:id="_A4f6dJ1tEemMSo-RzUJTPQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://TRANSFORM_JAVA5_PROFILES/JavaTransformProfile.epx#_znahgE3YEd-tPpJR7OP4Bg?JavaTransformation5.0/JavaTransformation50?"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://TRANSFORM_JAVA5_PROFILES/JavaTransformProfile.epx#_TQfqgOcaEdi4LptNXGi2fQ?JavaTransformation5.0?"/>
+    </profileApplication>
+  </uml:Package>
+  <Default:Documentation xmi:id="_A4IuEZ1tEemMSo-RzUJTPQ" base_Comment="_A4IuEJ1tEemMSo-RzUJTPQ"/>
+  <Default:Documentation xmi:id="_A4J8MZ1tEemMSo-RzUJTPQ" base_Comment="_A4J8MJ1tEemMSo-RzUJTPQ"/>
+  <Default:Documentation xmi:id="_A4LKUJ1tEemMSo-RzUJTPQ" base_Comment="_A4KjQZ1tEemMSo-RzUJTPQ"/>
+  <Default:Documentation xmi:id="_A4MYcp1tEemMSo-RzUJTPQ" base_Comment="_A4MYcZ1tEemMSo-RzUJTPQ"/>
+  <Default:Documentation xmi:id="_A4NmkJ1tEemMSo-RzUJTPQ" base_Comment="_A4M_gZ1tEemMSo-RzUJTPQ"/>
+  <Default:Documentation xmi:id="_A4PbwJ1tEemMSo-RzUJTPQ" base_Comment="_A4O0sZ1tEemMSo-RzUJTPQ"/>
+  <Default:Documentation xmi:id="_A4Qp4Z1tEemMSo-RzUJTPQ" base_Comment="_A4Qp4J1tEemMSo-RzUJTPQ"/>
+  <Default:Documentation xmi:id="_A4TtMZ1tEemMSo-RzUJTPQ" base_Comment="_A4TtMJ1tEemMSo-RzUJTPQ"/>
+  <Default:Documentation xmi:id="_A4X-oJ1tEemMSo-RzUJTPQ" base_Comment="_A4XXkJ1tEemMSo-RzUJTPQ"/>
+  <JavaTransformation50:JavaArray xmi:id="_A4hIkJ1tEemMSo-RzUJTPQ" base_TypedElement="_A4f6cJ1tEemMSo-RzUJTPQ"/>
+  <Default:Documentation xmi:id="_A4hvoJ1tEemMSo-RzUJTPQ" base_Comment="_A4hIkp1tEemMSo-RzUJTPQ"/>
+  <Default:Documentation xmi:id="_A4i9wZ1tEemMSo-RzUJTPQ" base_Comment="_A4i9wJ1tEemMSo-RzUJTPQ"/>
+  <Default:Documentation xmi:id="_A4ky8Z1tEemMSo-RzUJTPQ" base_Comment="_A4ky8J1tEemMSo-RzUJTPQ"/>
+  <Default:Documentation xmi:id="_A4n2QZ1tEemMSo-RzUJTPQ" base_Comment="_A4n2QJ1tEemMSo-RzUJTPQ"/>
+  <Default:Documentation xmi:id="_A4qSgZ1tEemMSo-RzUJTPQ" base_Comment="_A4qSgJ1tEemMSo-RzUJTPQ"/>
+  <JavaTransformation50:JavaCollection2 xmi:id="_A4uj8J1tEemMSo-RzUJTPQ" collectionType="java.util.LinkedList" base_TypedElement="_A4t84J1tEemMSo-RzUJTPQ"/>
+  <Default:Documentation xmi:id="_A4wZIJ1tEemMSo-RzUJTPQ" base_Comment="_A4vyEZ1tEemMSo-RzUJTPQ"/>
+  <Default:Documentation xmi:id="_A4xnQZ1tEemMSo-RzUJTPQ" base_Comment="_A4xnQJ1tEemMSo-RzUJTPQ"/>
+  <Default:Documentation xmi:id="_A40DgJ1tEemMSo-RzUJTPQ" base_Comment="_A4zccJ1tEemMSo-RzUJTPQ"/>
+  <Default:Documentation xmi:id="_A40qkZ1tEemMSo-RzUJTPQ" base_Comment="_A40qkJ1tEemMSo-RzUJTPQ"/>
+  <Default:Documentation xmi:id="_A42fwJ1tEemMSo-RzUJTPQ" base_Comment="_A414sJ1tEemMSo-RzUJTPQ"/>
+  <Default:Documentation xmi:id="_A5CtAZ1tEemMSo-RzUJTPQ" base_Comment="_A5CtAJ1tEemMSo-RzUJTPQ"/>
+  <Default:Documentation xmi:id="_A5O6QZ1tEemMSo-RzUJTPQ" base_Comment="_A5O6QJ1tEemMSo-RzUJTPQ"/>
+  <Default:Documentation xmi:id="_A5QIYJ1tEemMSo-RzUJTPQ" base_Comment="_A5PhUJ1tEemMSo-RzUJTPQ"/>
+  <JavaTransformation50:JavaArray xmi:id="_A5RWgp1tEemMSo-RzUJTPQ" base_TypedElement="_A5QvcJ1tEemMSo-RzUJTPQ"/>
+  <JavaTransformation50:JavaArray xmi:id="_A5SkoJ1tEemMSo-RzUJTPQ" base_TypedElement="_A5R9kJ1tEemMSo-RzUJTPQ"/>
+  <Default:Documentation xmi:id="_A5TLsZ1tEemMSo-RzUJTPQ" base_Comment="_A5TLsJ1tEemMSo-RzUJTPQ"/>
+  <Default:Documentation xmi:id="_A5UZ0Z1tEemMSo-RzUJTPQ" base_Comment="_A5UZ0J1tEemMSo-RzUJTPQ"/>
+  <JavaTransformation50:JavaArray xmi:id="_A5WPAJ1tEemMSo-RzUJTPQ" base_TypedElement="_A5Vn8J1tEemMSo-RzUJTPQ"/>
+  <JavaTransformation50:JavaArray xmi:id="_A5W2Ep1tEemMSo-RzUJTPQ" base_TypedElement="_A5WPAZ1tEemMSo-RzUJTPQ"/>
+  <Default:Documentation xmi:id="_A5YEMJ1tEemMSo-RzUJTPQ" base_Comment="_A5XdIZ1tEemMSo-RzUJTPQ"/>
+  <Default:Documentation xmi:id="_A5agcJ1tEemMSo-RzUJTPQ" base_Comment="_A5Z5YZ1tEemMSo-RzUJTPQ"/>
+  <Default:Documentation xmi:id="_A5cVoJ1tEemMSo-RzUJTPQ" base_Comment="_A5bukZ1tEemMSo-RzUJTPQ"/>
+  <JavaTransformation50:JavaArray xmi:id="_A5djwp1tEemMSo-RzUJTPQ" base_TypedElement="_A5c8sJ1tEemMSo-RzUJTPQ"/>
+</xmi:XMI>
