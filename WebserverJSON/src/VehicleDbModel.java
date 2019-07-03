@@ -138,7 +138,7 @@ public class VehicleDbModel {
 			// if timestamp is zero, set dummy timestamp
 			if(!passengers.get("timestamp").toString().contentEquals("0"))
 			{
-			LocalDateTime parsedDatePassenger = LocalDateTime.parse(passengers.get("timestamp").toString(),formatter);
+			LocalDateTime parsedDatePassenger = LocalDateTime.parse(passengers.get("timeStamp").toString(),formatter);
 			java.sql.Timestamp sqlTimestampPassenger = java.sql.Timestamp.valueOf(parsedDatePassenger);
 			}
 			//System.out.println(passengers.get("timestamp").toString());
@@ -175,7 +175,7 @@ public class VehicleDbModel {
 		        
 		        
 		    	
-		    	if(singleSensor.get("state").toString().contentEquals("ON"))
+		    	if(singleSensor.get("state").toString().contentEquals("On") || singleSensor.get("state").toString().contentEquals("true"))
 		    	{
 		    		// if timestamp is zero, set dummy timestamp
 			        if(!singleSensor.get("timestamp").toString().contentEquals("0"))
@@ -260,7 +260,7 @@ public class VehicleDbModel {
 			    	}
 
 			    }
-		    	else if(singleSensor.get("state").toString().contentEquals("OFF")) {
+		    	else if(singleSensor.get("state").toString().contentEquals("Off") || singleSensor.get("state").toString().contentEquals("false")) {
 		    		System.out.println("Sensor" + singleSensor.get("name") + " is off!");
 		    		
 		    	}
