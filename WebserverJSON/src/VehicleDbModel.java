@@ -332,6 +332,13 @@ public class VehicleDbModel {
 	            	}
 	            try
 	            {
+    	        this.preparedStatement = this.conn.prepareStatement("UPDATE users Set vehicle=? where vehicle=?");
+    	        this.preparedStatement.setInt(1,0);
+    	        this.preparedStatement.setInt(2,1);
+    	        this.preparedStatement.executeUpdate();
+    	        
+    	        this.preparedStatement.close();
+	            	
 	            this.preparedStatement = this.conn.prepareStatement("UPDATE users SET vehicle=? WHERE rfidID=?");
 	            this.preparedStatement.setInt(1,1);
 	            this.preparedStatement.setString(2, id);
@@ -434,7 +441,6 @@ public class VehicleDbModel {
 	                {
 	                	System.out.println("User does not exist or database is not connected 1! "+ex);
 	                }
-	            	
 	            	
     	            this.preparedStatement = this.conn.prepareStatement("UPDATE users Set vehicle=? where rfidID=?");
     	            this.preparedStatement.setInt(1,0);
