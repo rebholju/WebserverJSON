@@ -136,7 +136,7 @@ public class VehicleDbModel {
 			java.sql.Timestamp sqlTimestamp = java.sql.Timestamp.valueOf(parsedDate);
 			
 			// if timestamp is zero, set dummy timestamp
-			if(!passengers.get("timestamp").toString().contentEquals("0"))
+			if(!passengers.get("timeStamp").toString().contentEquals("0"))
 			{
 			LocalDateTime parsedDatePassenger = LocalDateTime.parse(passengers.get("timeStamp").toString(),formatter);
 			java.sql.Timestamp sqlTimestampPassenger = java.sql.Timestamp.valueOf(parsedDatePassenger);
