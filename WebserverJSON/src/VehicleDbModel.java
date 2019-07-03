@@ -155,7 +155,7 @@ public class VehicleDbModel {
 	            	  username = resultSet.getString("username");
 	            	  if(i<0)
 	            	  {
-	            		  System.out.println("Error: RFID exist multiple times!");
+	            		  System.out.println("Error: multiple users authentificated to Vehicle!");
 	            	  }
 	            	  i++;
             	}
